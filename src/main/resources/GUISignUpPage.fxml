@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUISignUpPageController">
+  <children>
+    <VBox layoutX="460.0" layoutY="123.0" prefWidth="360.0" spacing="32.0">
+      <children>
+        <Label styleClass="title" text="Create Admin Account" />
+        <VBox prefWidth="340.0" spacing="16.0">
+          <children>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Name" />
+                <TextField fx:id="fieldName" promptText="Introduce your Name" styleClass="input" />
+                <Label fx:id="labelTagName" text="Label" textFill="RED" />
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Last Name" />
+                <TextField fx:id="fieldLastName" promptText="Introduce your Last Name" styleClass="input" />
+                <Label fx:id="labelTagLastName" text="Label" textFill="RED" />
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Email" />
+                <TextField fx:id="fieldEmail" promptText="Introduce your Email" styleClass="input" />
+                <Label fx:id="labelTagEmail" text="Label" textFill="RED" />
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Password" />
+                <PasswordField fx:id="fieldPassword" promptText="Introduce your Password" styleClass="input" />
+                <Label fx:id="labelTagPassword" text="Label" textFill="RED" />
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Confirm Password" />
+                <PasswordField fx:id="fieldConfirmPassword" promptText="Introduce your Password again" styleClass="input" />
+                <Label fx:id="labelTagConfirmPassword" text="Label" textFill="RED" />
+              </children>
+            </VBox>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSignUpClick" styleClass="button" text="Confirm" />
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

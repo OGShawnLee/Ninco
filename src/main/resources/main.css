@@ -1,0 +1,25 @@
+.button, .column, .input, .label, .title, .text-area, .error-tag {
+    -fx-font-family: "Geist";
+}
+
+.button, .input {
+    -fx-pref-height: 32px;
+}
+
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.text-area {
+    -fx-pref-height: 64px;
+}
+
+.text-notable {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.error-tag {
+    -fx-font-size: 12px;
+}
