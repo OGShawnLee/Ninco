@@ -1,5 +1,8 @@
 package ninco.gui.controller;
 
+import ninco.gui.modal.ModalFacade;
+import ninco.gui.modal.ModalFacadeConfiguration;
+
 public class GUILandingAdminPageController extends LandingController {
   public void onClickReviewEmployeeList() {
 
@@ -21,6 +24,8 @@ public class GUILandingAdminPageController extends LandingController {
   }
 
   public void onClickRegisterStore() {
-
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration("Register Store", "GUIRegisterStoreModal")
+    );
   }
 }

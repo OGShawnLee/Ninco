@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ninco.gui.controller.GUIRegisterStoreModalController">
+  <children>
+    <VBox layoutX="230.0" layoutY="217.0" prefWidth="360.0" spacing="32.0">
+      <children>
+        <Label styleClass="title" text="Register Store"/>
+        <VBox prefWidth="340.0" spacing="16.0">
+          <children>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Name"/>
+                <TextField fx:id="fieldName" promptText="Introduce the Store Name" styleClass="input"/>
+                <Label fx:id="labelTagName" text="Label" textFill="RED"/>
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Address"/>
+                <TextField fx:id="fieldAddress" promptText="Introduce the Store Address" styleClass="input"/>
+                <Label fx:id="labelTagAddress" text="Label" textFill="RED"/>
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Phone Number"/>
+                <TextField fx:id="fieldPhoneNumber" promptText="Introduce the Store Phone Number" styleClass="input"/>
+                <Label fx:id="labelTagPhoneNUmber" text="Label" textFill="RED"/>
+              </children>
+            </VBox>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStore"
+                    styleClass="button" text="Log In"/>
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

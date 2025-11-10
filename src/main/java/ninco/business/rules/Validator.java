@@ -8,6 +8,60 @@ public class Validator {
   private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
   // MIN 8 CHARS, MAX 64, AT LEAST ONE UPPERCASE, ONE LOWERCASE, ONE DIGIT, ONE SPECIAL CHAR (!@#$%^&*-+)
   private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*\\-+])[A-Za-z\\d!@#$%^&*\\-+]{8,64}$";
+  private static final String PHONE_REGEX = "^(\\+\\d{1,3}[- ]?)?\\d{10,15}$";
+  private static final String ADDRESS_REGEX = "^[a-zA-Z0-9\\s,.-]{12,256}$";
+
+  public static boolean isInvalidPhoneNumber(String phoneNumber) {
+    return isInvalidString(phoneNumber, 10, 15) || !phoneNumber.trim().matches(PHONE_REGEX);
+  }
+
+  public static ValidationResult getIsInvalidPhoneNumberResult(String phoneNumber) {
+    if (isInvalidString(phoneNumber)) {
+      return new ValidationResult("Phone number cannot be empty.");
+    }
+
+    if (phoneNumber.trim().matches(PHONE_REGEX)) {
+      return new ValidationResult();
+    }
+
+    return new ValidationResult("Phone number format is invalid. Must be 10 to 15 digits, optionally starting with a country code.");
+  }
+
+  public static String getValidPhoneNumber(String phoneNumber) throws InvalidFieldException {
+    ValidationResult result = getIsInvalidPhoneNumberResult(phoneNumber);
+
+    if (result.isInvalid()) {
+      throw new InvalidFieldException(result.getMessage(), "phone-number");
+    }
+
+    return phoneNumber.trim();
+  }
+
+  public static boolean isInvalidAddress(String address) {
+    return isInvalidString(address) || !address.trim().matches(ADDRESS_REGEX);
+  }
+
+  public static ValidationResult getIsInvalidAddressResult(String address) {
+    if (isInvalidString(address)) {
+      return new ValidationResult("Address cannot be empty");
+    }
+
+    if (address.trim().matches(ADDRESS_REGEX)) {
+      return new ValidationResult();
+    }
+
+    return new ValidationResult("Address format is invalid.");
+  }
+
+  public static String getValidAddress(String address) throws InvalidFieldException {
+    ValidationResult result = getIsInvalidAddressResult(address);
+
+    if (result.isInvalid()) {
+      throw new InvalidFieldException(result.getMessage(), "address");
+    }
+
+    return address.trim();
+  }
 
   public static boolean isInvalidString(String value) {
     return value == null || value.trim().length() == 0;

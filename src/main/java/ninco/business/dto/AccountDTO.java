@@ -38,7 +38,8 @@ public class AccountDTO {
   ) throws InvalidFieldException {
     this.id = id;
     this.email = Validator.getValidEmail(email);
-    this.password = Validator.getValidPassword(password);
+    // IMPORTANT: HASHED PASSWORD FROM DB, DO NOT VALIDATE
+    this.password = password;
     this.role = role;
     this.state = state;
     this.createdAt = createdAt;
