@@ -13,7 +13,9 @@ import ninco.common.InvalidFieldException;
 import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
 
-public class GUIRegisterProductModalController extends Controller {
+public class GUIRegisterProductModalController extends Controller implements ContextController<ProductDTO> {
+  @FXML
+  private Label title;
   @FXML
   private Label labelTagName;
   @FXML
@@ -30,9 +32,32 @@ public class GUIRegisterProductModalController extends Controller {
   private Label labelTagPrice;
   @FXML
   private TextField fieldPrice;
+  private ProductDTO editProductDTO;
+
+  @Override
+  public void setContext(ProductDTO data) {
+    editProductDTO = data;
+    loadEditData();
+    configureTitle();
+  }
 
   public void initialize() {
     cleanErrorLabels();
+  }
+
+  public void configureTitle() {
+    if (editProductDTO == null) return;
+
+    title.setText("Update Product");
+  }
+
+  public void loadEditData() {
+    if (editProductDTO == null) return;
+
+    fieldName.setText(editProductDTO.getName());
+    fieldDescription.setText(editProductDTO.getDescription());
+    fieldBrand.setText(editProductDTO.getBrand());
+    fieldPrice.setText(String.valueOf(editProductDTO.getPrice()));
   }
 
   public void cleanErrorLabels() {
@@ -85,8 +110,16 @@ public class GUIRegisterProductModalController extends Controller {
     try {
       cleanErrorLabels();
       if (isValidData()) {
-        ProductDAO.getInstance().createOne(getProductDTOFromInput());
-        AlertFacade.showSuccessAndWait("Product registered successfully.");
+        if (editProductDTO == null) {
+          ProductDAO.getInstance().createOne(getProductDTOFromInput());
+          AlertFacade.showSuccessAndWait("Product registered successfully.");
+        } else {
+          if (ProductDAO.getInstance().updateOne(getProductDTOFromInput(), editProductDTO)) {
+            AlertFacade.showErrorAndWait("Unable to update product, try again later.");
+          } else {
+            AlertFacade.showSuccessAndWait("Product updated successfully.");
+          }
+        }
       }
     } catch (InvalidFieldException | UserDisplayableException e) {
       AlertFacade.showErrorAndWait(e.getMessage());

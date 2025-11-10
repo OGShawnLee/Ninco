@@ -77,7 +77,14 @@ public class GUIReviewProductListPageController extends Controller {
         "Para realizar esta operación debe seleccionar una fila de la tabla."
       );
     } else {
-      // TODO: Add Manage Store Use Case
+      ModalFacade.createAndDisplayContextModal(
+        new ModalFacadeConfiguration(
+          "Update Product",
+          "GUIRegisterProductModal",
+          this::setTableItems
+        ),
+        selectedProduct
+      );
     }
   }
 

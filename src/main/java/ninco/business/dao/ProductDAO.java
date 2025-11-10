@@ -19,6 +19,8 @@ public class ProductDAO extends DAOShape<ProductDTO> {
   private static final Logger LOGGER = LogManager.getLogger(ProductDAO.class);
   private static final String CREATE_ONE_QUERY = "INSERT INTO Product (name, description, brand, price) VALUES (?, ?, ?, ?)";
   private static final String GET_ALL_QUERY = "SELECT * FROM CompleteProductView";
+  private static final String UPDATE_ONE_QUERY =
+    "UPDATE Product SET name = ?, description = ?, brand = ?, price = ? WHERE product_id = ?";
   private static final ProductDAO INSTANCE = new ProductDAO();
 
   private ProductDAO() {}
@@ -40,15 +42,15 @@ public class ProductDAO extends DAOShape<ProductDTO> {
     );
   }
 
-  public void createOne(ProductDTO storeDTO) throws UserDisplayableException {
+  public void createOne(ProductDTO productDTO) throws UserDisplayableException {
     try (
       Connection connection = DBConnector.getInstance().getConnection();
       PreparedStatement statement = connection.prepareCall(CREATE_ONE_QUERY);
     ) {
-      statement.setString(1, storeDTO.getName());
-      statement.setString(2, storeDTO.getDescription());
-      statement.setString(3, storeDTO.getBrand());
-      statement.setFloat(4, storeDTO.getPrice());
+      statement.setString(1, productDTO.getName());
+      statement.setString(2, productDTO.getDescription());
+      statement.setString(3, productDTO.getBrand());
+      statement.setFloat(4, productDTO.getPrice());
 
       statement.executeUpdate();
     } catch (SQLException e) {
@@ -71,6 +73,34 @@ public class ProductDAO extends DAOShape<ProductDTO> {
       return storeDTOList;
     } catch (SQLException e) {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar los productos.");
+    }
+  }
+
+  public boolean updateOne(ProductDTO productDTO, ProductDTO originalProductDTO) throws UserDisplayableException {
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareCall(UPDATE_ONE_QUERY);
+    ) {
+      statement.setString(1, productDTO.getName());
+      statement.setString(2, productDTO.getDescription());
+      statement.setString(3, productDTO.getBrand());
+      statement.setFloat(4, productDTO.getPrice());
+      statement.setInt(5, originalProductDTO.getID());
+
+      statement.executeUpdate();
+
+      boolean failed = statement.getUpdateCount() == -1;
+
+      if (failed) {
+        LOGGER.warn(
+          "Actualización Fallida Inesperada de Producto: {}",
+          String.format("%s %s", productDTO.getID(), productDTO.getName())
+        );
+      }
+
+      return failed;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible crear producto.");
     }
   }
 }
