@@ -85,8 +85,10 @@ CREATE TABLE Product
 (
     product_id  INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(128)   NOT NULL,
-    description TEXT           NULL,
-    price       DECIMAL(10, 2) NOT NULL
+    description VARCHAR(512)   NOT NULL,
+    brand       VARCHAR(64)    NOT NULL,
+    price       DECIMAL(10, 2) NOT NULL,
+    created_at  DATETIME(6)    NOT NULL DEFAULT NOW(6)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
@@ -98,7 +100,7 @@ CREATE TABLE Invoice
     store_id    INT          NOT NULL,
     name_client VARCHAR(128) NOT NULL,
     created_at  DATETIME(6)  NOT NULL DEFAULT NOW(6),
-    CONSTRAINT fk_invoice_store FOREIGN KEY (store_id) REFERENCES Store (store_id)
+    FOREIGN KEY (store_id) REFERENCES Store (store_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
@@ -108,12 +110,13 @@ CREATE TABLE Sale
 (
     sale_id     INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     invoice_id  INT            NOT NULL,
-    phone_store VARCHAR(15)    NOT NULL,
+    store_id    INT            NOT NULL,
     employee_id INT            NOT NULL,
     amount      INT            NOT NULL CHECK (amount > 0),
     price       DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (invoice_id) REFERENCES Invoice (invoice_id),
-    FOREIGN KEY (employee_id) REFERENCES Employee (employee_id)
+    FOREIGN KEY (employee_id) REFERENCES Employee (employee_id),
+    FOREIGN KEY (store_id) REFERENCES Store (store_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
@@ -130,6 +133,17 @@ CREATE TABLE Stock
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+DROP VIEW CompleteProductView;
+CREATE VIEW CompleteProductView AS
+SELECT P.product_id,
+       P.name,
+       P.description,
+       P.brand,
+       P.price,
+       COALESCE(((SELECT SUM(quantity) FROM Stock S WHERE S.product_id = P.product_id)), 0) as stock,
+       P.created_at
+FROM Product P;
 
 -- Table: PendingRegistrations
 CREATE TABLE PendingRegistrations
