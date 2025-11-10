@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 public class EmployeeDAO extends DAOShape<EmployeeDTO> {
   private static final Logger LOGGER = LogManager.getLogger(EmployeeDAO.class);
@@ -25,6 +26,7 @@ public class EmployeeDAO extends DAOShape<EmployeeDTO> {
   private static final String CREATE_ONE_ACCOUNT_QUERY =
     "INSERT INTO Account (email, password, role) VALUES (?, ?, ?)";
   private static final String FIND_ONE_QUERY = "SELECT * FROM CompleteEmployeeView WHERE email = ?";
+  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteEmployeeView";
   private static EmployeeDAO INSTANCE = new EmployeeDAO();
 
   private EmployeeDAO() {}
@@ -93,6 +95,24 @@ public class EmployeeDAO extends DAOShape<EmployeeDTO> {
       return null;
     } catch (SQLException e) {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar el empleado.");
+    }
+  }
+
+  public ArrayList<EmployeeDTO> getAll() throws UserDisplayableException {
+    ArrayList<EmployeeDTO> employeeDTOList = new ArrayList<>();
+
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareStatement(GET_ALL_QUERY);
+      ResultSet resultSet = statement.executeQuery()
+    ) {
+      while (resultSet.next()) {
+        employeeDTOList.add(createDTOInstanceFromResultSet(resultSet));
+      }
+
+      return employeeDTOList;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar los empleados.");
     }
   }
 

@@ -5,7 +5,7 @@ import ninco.gui.modal.ModalFacadeConfiguration;
 
 public class GUILandingAdminPageController extends LandingController {
   public void onClickReviewEmployeeList() {
-
+    GUIReviewEmployeeListPageController.navigateToEmployeeListPage(getScene());
   }
 
   public void onClickRegisterEmployee() {
