@@ -123,7 +123,7 @@ public class GUISignUpPageController extends Controller {
     );
   }
 
-  public void onSignUpClick() {
+  public void onClickSignUp() {
     try {
       cleanErrorLabels();
       if (isValidData()) {

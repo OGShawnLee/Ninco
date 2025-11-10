@@ -27,10 +27,10 @@ public class GUILogInPageController extends Controller {
   private PasswordField fieldPassword;
 
   public void initialize() {
-    configureErrorLabels();
+    cleanErrorLabels();
   }
 
-  public void configureErrorLabels() {
+  public void cleanErrorLabels() {
     labelTagEmail.setText("");
     labelTagPassword.setText("");
   }
@@ -53,8 +53,9 @@ public class GUILogInPageController extends Controller {
     return isValid;
   }
 
-  public void onLogInClick() {
+  public void onClickLogIn() {
     try {
+      cleanErrorLabels();
       if (isValidData()) {
         String password = fieldPassword.getText();
         String email = fieldEmail.getText();

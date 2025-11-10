@@ -49,7 +49,7 @@
                 <Label fx:id="labelTagConfirmPassword" text="Label" textFill="RED" />
               </children>
             </VBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSignUpClick" styleClass="button" text="Confirm" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickSignUp" styleClass="button" text="Confirm" />
           </children>
         </VBox>
       </children>

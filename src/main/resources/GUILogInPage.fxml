@@ -30,7 +30,7 @@
                 <Label fx:id="labelTagPassword" text="Label" textFill="RED"/>
               </children>
             </VBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLogInClick"
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickLogIn"
                     styleClass="button" text="Log In"/>
           </children>
         </VBox>
