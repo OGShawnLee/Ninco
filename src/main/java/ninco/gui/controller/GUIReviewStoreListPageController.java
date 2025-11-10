@@ -16,7 +16,7 @@ import ninco.gui.modal.ModalFacadeConfiguration;
 
 public class GUIReviewStoreListPageController extends Controller {
   @FXML
-  private TableView<StoreDTO> tableStaff;
+  private TableView<StoreDTO> tableStore;
   @FXML
   private TableColumn<StoreDTO, String> columnStoreID;
   @FXML
@@ -46,7 +46,7 @@ public class GUIReviewStoreListPageController extends Controller {
 
   public void setTableItems() {
     try {
-      tableStaff.setItems(
+      tableStore.setItems(
         FXCollections.observableList(StoreDAO.getInstance().getAll())
       );
     } catch (UserDisplayableException e) {
@@ -67,7 +67,7 @@ public class GUIReviewStoreListPageController extends Controller {
   }
 
   public void onClickManageStore() {
-    StoreDTO selectedStore = tableStaff.getSelectionModel().getSelectedItem();
+    StoreDTO selectedStore = tableStore.getSelectionModel().getSelectedItem();
 
     if (selectedStore == null) {
       AlertFacade.showWarningAndWait(

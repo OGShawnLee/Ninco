@@ -37,7 +37,7 @@ public class ProductDTO implements Record {
     this.id = id;
     this.name = Validator.getValidName(name, "product-name", 3, 128);
     this.description = Validator.getValidText(description, "product-description");
-    this.brand = Validator.getValidName(name, "product-brand", 3, 64);
+    this.brand = Validator.getValidName(brand, "product-brand", 3, 64);
     this.price = Validator.getValidPrice(price, "product-price");
     this.stock = stock;
     this.createdAt = createdAt;
@@ -55,7 +55,7 @@ public class ProductDTO implements Record {
   public ProductDTO(String name, String description, String brand, String price) throws InvalidFieldException {
     this.name = Validator.getValidName(name, "product-name", 3, 128);
     this.description = Validator.getValidText(description, "product-description");
-    this.brand = Validator.getValidName(name, "product-brand", 3, 64);
+    this.brand = Validator.getValidName(brand, "product-brand", 3, 64);
     this.price = Validator.getValidPrice(Float.parseFloat(price), "product-price");
   }
 

@@ -13,7 +13,7 @@ public class GUILandingAdminPageController extends LandingController {
   }
 
   public void onClickReviewProductList() {
-
+    GUIReviewProductListPageController.navigateToProductListPage(getScene());
   }
 
   public void onClickRegisterProduct() {

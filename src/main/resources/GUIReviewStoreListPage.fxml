@@ -23,7 +23,7 @@
               <Button mnemonicParsing="false" onMouseClicked="#onClickManageStore" styleClass="button" text="Manage Store" />
             </HBox>
           </HBox>
-          <TableView fx:id="tableStaff" prefHeight="618.0" prefWidth="950.0">
+          <TableView fx:id="tableStore" prefHeight="618.0" prefWidth="950.0">
             <columns>
               <TableColumn fx:id="columnStoreID" prefWidth="50.0" styleClass="column" text="ID" />
               <TableColumn fx:id="columnName" prefWidth="220.0" styleClass="column" text="Name" />
