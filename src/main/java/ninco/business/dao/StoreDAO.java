@@ -13,15 +13,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class StoreDAO extends DAOShape<StoreDTO> {
   private static final Logger LOGGER = LogManager.getLogger(StoreDAO.class);
   private static final String CREATE_ONE_QUERY = "INSERT INTO Store (name, address, phone) VALUES (?, ?, ?)";
+  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteStoreView";
   private static final String FIND_ONE_QUERY_BY_PHONE_NUMBER = "SELECT * FROM CompleteStoreView WHERE phone = ?";
   private static StoreDAO INSTANCE = new StoreDAO();
 
-  private StoreDAO() {
-  }
+  private StoreDAO() {}
 
   public static StoreDAO getInstance() {
     return INSTANCE;
@@ -70,6 +71,24 @@ public class StoreDAO extends DAOShape<StoreDTO> {
       return null;
     } catch (SQLException e) {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar el empleado.");
+    }
+  }
+
+  public ArrayList<StoreDTO> getAll() throws UserDisplayableException {
+    ArrayList<StoreDTO> storeDTOList = new ArrayList<>();
+
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareStatement(GET_ALL_QUERY);
+      ResultSet resultSet = statement.executeQuery()
+    ) {
+      while (resultSet.next()) {
+        storeDTOList.add(createDTOInstanceFromResultSet(resultSet));
+      }
+
+      return storeDTOList;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar las tiendas.");
     }
   }
 }

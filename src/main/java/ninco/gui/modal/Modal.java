@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-
 /**
  * Modal class that represents a modal dialog in the application.
  * It is responsible for loading the FXML file, creating the stage, and managing the modal's lifecycle

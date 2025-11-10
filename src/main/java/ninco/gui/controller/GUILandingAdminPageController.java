@@ -21,6 +21,7 @@ public class GUILandingAdminPageController extends LandingController {
   }
 
   public void onClickReviewStoreList() {
+    GUIReviewStoreListPageController.navigateToStoreListPage(getScene());
   }
 
   public void onClickRegisterStore() {

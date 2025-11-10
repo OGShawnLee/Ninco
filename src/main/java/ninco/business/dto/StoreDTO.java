@@ -5,7 +5,7 @@ import ninco.common.InvalidFieldException;
 
 import java.time.LocalDateTime;
 
-public class StoreDTO {
+public class StoreDTO implements Record {
   private int id;
   private final String name;
   private final String address;
@@ -74,6 +74,7 @@ public class StoreDTO {
     return phoneNumber;
   }
 
+  @Override
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
