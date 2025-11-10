@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import javafx.util.Pair;
 import ninco.business.dao.AccountDAO;
 import ninco.business.dao.EmployeeDAO;
 import ninco.business.dto.AccountDTO;

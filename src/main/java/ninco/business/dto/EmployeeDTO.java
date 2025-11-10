@@ -6,7 +6,6 @@ import ninco.business.rules.Validator;
 import ninco.common.InvalidFieldException;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class EmployeeDTO implements Record {
   private int id;
