@@ -37,7 +37,7 @@
               </children>
             </VBox>
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStore"
-                    styleClass="button" text="Log In"/>
+                    styleClass="button" text="Confirm"/>
           </children>
         </VBox>
       </children>

@@ -17,7 +17,9 @@ public class GUILandingAdminPageController extends LandingController {
   }
 
   public void onClickRegisterProduct() {
-
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration("Register Product", "GUIRegisterProductModal")
+    );
   }
 
   public void onClickReviewStoreList() {

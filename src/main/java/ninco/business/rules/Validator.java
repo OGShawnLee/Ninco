@@ -1,6 +1,5 @@
 package ninco.business.rules;
 
-import javafx.util.Pair;
 import ninco.common.InvalidFieldException;
 
 public class Validator {
@@ -10,10 +9,6 @@ public class Validator {
   private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*\\-+])[A-Za-z\\d!@#$%^&*\\-+]{8,64}$";
   private static final String PHONE_REGEX = "^(\\+\\d{1,3}[- ]?)?\\d{10,15}$";
   private static final String ADDRESS_REGEX = "^[a-zA-Z0-9\\s,.-]{12,256}$";
-
-  public static boolean isInvalidPhoneNumber(String phoneNumber) {
-    return isInvalidString(phoneNumber, 10, 15) || !phoneNumber.trim().matches(PHONE_REGEX);
-  }
 
   public static ValidationResult getIsInvalidPhoneNumberResult(String phoneNumber) {
     if (isInvalidString(phoneNumber)) {
@@ -140,5 +135,57 @@ public class Validator {
     }
 
     return name.trim();
+  }
+
+  public static ValidationResult getIsValidTextResult(String text, String fieldName) {
+    if (isInvalidString(text, 3, 512)) {
+      return new ValidationResult(
+        String.format("%s must be between %d and %d characters long.", fieldName, 3, 512)
+      );
+    }
+
+    return new ValidationResult();
+  }
+
+  public static String getValidText(String text, String fieldName) throws InvalidFieldException {
+    ValidationResult result = getIsValidTextResult(text, fieldName);
+
+    if (result.isInvalid()) {
+      throw new InvalidFieldException(result.getMessage(), fieldName);
+    }
+
+    return text.trim();
+  }
+
+  public static ValidationResult getIsValidPriceResult(String price, String fieldName) {
+    try {
+      float parsedPrice = Float.parseFloat(price);
+
+      if (parsedPrice < 0) {
+        return new ValidationResult(
+          String.format("%s must be a non-negative number.", fieldName)
+        );
+      }
+
+      return new ValidationResult();
+    } catch (NumberFormatException e) {
+      return new ValidationResult(
+        String.format("%s must be a valid number.", fieldName)
+      );
+    }
+  }
+
+  public static float getValidPrice(float price, String fieldName) throws InvalidFieldException {
+    return getValidPrice(Float.toString(price), fieldName);
+  }
+
+  public static float getValidPrice(String price, String fieldName) throws InvalidFieldException {
+    ValidationResult result = getIsValidPriceResult(price, fieldName);
+
+    if (result.isInvalid()) {
+      throw new InvalidFieldException(result.getMessage(), fieldName);
+    }
+
+    return Float.parseFloat(price);
   }
 }

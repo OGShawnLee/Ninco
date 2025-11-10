@@ -1,7 +1,7 @@
 package ninco.business.rules;
 
 public class ValidationResult {
-  private boolean isInvalid;
+  private final boolean isInvalid;
   private String message;
 
   public ValidationResult(String message) {
