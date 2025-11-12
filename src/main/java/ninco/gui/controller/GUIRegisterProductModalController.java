@@ -45,13 +45,13 @@ public class GUIRegisterProductModalController extends Controller implements Con
     cleanErrorLabels();
   }
 
-  public void configureTitle() {
+  private void configureTitle() {
     if (editProductDTO == null) return;
 
     title.setText("Update Product");
   }
 
-  public void loadEditData() {
+  private void loadEditData() {
     if (editProductDTO == null) return;
 
     fieldName.setText(editProductDTO.getName());
@@ -60,14 +60,14 @@ public class GUIRegisterProductModalController extends Controller implements Con
     fieldPrice.setText(String.valueOf(editProductDTO.getPrice()));
   }
 
-  public void cleanErrorLabels() {
+  private void cleanErrorLabels() {
     labelTagName.setText("");
     labelTagDescription.setText("");
     labelTagBrand.setText("");
     labelTagPrice.setText("");
   }
 
-  public boolean isValidData() {
+  private boolean isValidData() {
     boolean isValid = true;
 
     ValidationResult result = Validator.getIsInvalidNameResult(fieldName.getText(), "Name", 3, 128);
@@ -97,7 +97,7 @@ public class GUIRegisterProductModalController extends Controller implements Con
     return isValid;
   }
 
-  public ProductDTO getProductDTOFromInput() throws InvalidFieldException {
+  private ProductDTO getProductDTOFromInput() throws InvalidFieldException {
     return new ProductDTO(
       fieldName.getText(),
       fieldDescription.getText(),

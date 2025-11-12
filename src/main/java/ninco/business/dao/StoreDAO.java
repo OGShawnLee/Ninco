@@ -20,6 +20,8 @@ public class StoreDAO extends DAOShape<StoreDTO> {
   private static final String CREATE_ONE_QUERY = "INSERT INTO Store (name, address, phone) VALUES (?, ?, ?)";
   private static final String GET_ALL_QUERY = "SELECT * FROM CompleteStoreView";
   private static final String FIND_ONE_QUERY_BY_PHONE_NUMBER = "SELECT * FROM CompleteStoreView WHERE phone = ?";
+  private static final String UPDATE_ONE_QUERY =
+    "UPDATE Store set name = ?, address = ?, phone = ? WHERE store_id = ?";
   private static final StoreDAO INSTANCE = new StoreDAO();
 
   private StoreDAO() {}
@@ -89,6 +91,33 @@ public class StoreDAO extends DAOShape<StoreDTO> {
       return storeDTOList;
     } catch (SQLException e) {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar las tiendas.");
+    }
+  }
+
+  public boolean updateOne(StoreDTO storeDTO, StoreDTO originalStoreDTO) throws UserDisplayableException {
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareCall(UPDATE_ONE_QUERY);
+    ) {
+      statement.setString(1, storeDTO.getName());
+      statement.setString(2, storeDTO.getAddress());
+      statement.setString(3, storeDTO.getPhoneNumber());
+      statement.setInt(4, originalStoreDTO.getID());
+
+      statement.executeUpdate();
+
+      boolean failed = statement.getUpdateCount() == -1;
+
+      if (failed) {
+        LOGGER.warn(
+          "Actualización Fallida Inesperada de Tienda: {}",
+          String.format("%s %s", storeDTO.getID(), storeDTO.getName())
+        );
+      }
+
+      return failed;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible actualizar producto.");
     }
   }
 }

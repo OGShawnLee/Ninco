@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import ninco.business.dao.ProductDAO;
 import ninco.business.dao.StoreDAO;
 import ninco.business.dto.StoreDTO;
 import ninco.business.rules.ValidationResult;
@@ -12,7 +13,9 @@ import ninco.common.InvalidFieldException;
 import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
 
-public class GUIRegisterStoreModalController extends Controller {
+public class GUIRegisterStoreModalController extends Controller implements ContextController<StoreDTO> {
+  @FXML
+  private Label title;
   @FXML
   private Label labelTagName;
   @FXML
@@ -25,18 +28,40 @@ public class GUIRegisterStoreModalController extends Controller {
   private Label labelTagPhoneNUmber;
   @FXML
   private TextField fieldPhoneNumber;
+  private StoreDTO editStoreDTO;
+
+  @Override
+  public void setContext(StoreDTO data) {
+    editStoreDTO = data;
+    loadEditData();
+    configureTitle();
+  }
 
   public void initialize() {
     cleanErrorLabels();
   }
 
-  public void cleanErrorLabels() {
+  private void configureTitle() {
+    if (editStoreDTO == null) return;
+
+    title.setText("Update Store");
+  }
+
+  private void loadEditData() {
+    if (editStoreDTO == null) return;
+
+    fieldName.setText(editStoreDTO.getName());
+    fieldAddress.setText(editStoreDTO.getAddress());
+    fieldPhoneNumber.setText(editStoreDTO.getPhoneNumber());
+  }
+
+  private void cleanErrorLabels() {
     labelTagName.setText("");
     labelTagAddress.setText("");
     labelTagPhoneNUmber.setText("");
   }
 
-  public boolean isValidData() {
+  private boolean isValidData() {
     boolean isValid = true;
 
     ValidationResult result = Validator.getIsInvalidNameResult(fieldName.getText(), "Store Name", 3, 128);
@@ -60,7 +85,7 @@ public class GUIRegisterStoreModalController extends Controller {
     return isValid;
   }
 
-  public StoreDTO getStoreDTOFromInput() throws InvalidFieldException {
+  private StoreDTO getStoreDTOFromInput() throws InvalidFieldException {
     return new StoreDTO(
       fieldName.getText(),
       fieldAddress.getText(),
@@ -72,15 +97,23 @@ public class GUIRegisterStoreModalController extends Controller {
     try {
       cleanErrorLabels();
       if (isValidData()) {
-        StoreDTO existingStoreDTO = StoreDAO.getInstance().findOneByPhoneNumber(fieldPhoneNumber.getText());
+        if (editStoreDTO == null) {
+          StoreDTO existingStoreDTO = StoreDAO.getInstance().findOneByPhoneNumber(fieldPhoneNumber.getText());
 
-        if (existingStoreDTO != null) {
-          labelTagPhoneNUmber.setText("A store with this phone number already exists.");
-          return;
+          if (existingStoreDTO != null) {
+            labelTagPhoneNUmber.setText("A store with this phone number already exists.");
+            return;
+          }
+
+          StoreDAO.getInstance().createOne(getStoreDTOFromInput());
+          AlertFacade.showSuccessAndWait("Store registered successfully.");
+        } else {
+          if (StoreDAO.getInstance().updateOne(getStoreDTOFromInput(), editStoreDTO)) {
+            AlertFacade.showErrorAndWait("Unable to update store, try again later.");
+          } else {
+            AlertFacade.showSuccessAndWait("Store updated successfully.");
+          }
         }
-
-        StoreDAO.getInstance().createOne(getStoreDTOFromInput());
-        AlertFacade.showSuccessAndWait("Store registered successfully.");
       }
     } catch (InvalidFieldException | UserDisplayableException e) {
       AlertFacade.showErrorAndWait(e.getMessage());

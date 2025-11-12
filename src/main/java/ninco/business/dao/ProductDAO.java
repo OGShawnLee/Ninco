@@ -100,7 +100,7 @@ public class ProductDAO extends DAOShape<ProductDTO> {
 
       return failed;
     } catch (SQLException e) {
-      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible crear producto.");
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible actualizar producto.");
     }
   }
 }
