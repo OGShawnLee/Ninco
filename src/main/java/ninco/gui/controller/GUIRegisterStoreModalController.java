@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import ninco.business.dao.ProductDAO;
 import ninco.business.dao.StoreDAO;
 import ninco.business.dto.StoreDTO;
 import ninco.business.rules.ValidationResult;
