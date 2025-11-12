@@ -13,6 +13,8 @@ import ninco.business.enumeration.Role;
 import ninco.business.enumeration.State;
 import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
+import ninco.gui.modal.ModalFacade;
+import ninco.gui.modal.ModalFacadeConfiguration;
 
 public class GUIReviewEmployeeListPageController extends Controller {
   @FXML
@@ -63,7 +65,13 @@ public class GUIReviewEmployeeListPageController extends Controller {
   }
 
   public void onClickRegisterEmployee() {
-    // TODO: Add Register Employee Use Case
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration(
+        "Register Employee",
+        "GUIRegisterEmployeeModal",
+        this::setTableItems
+      )
+    );
   }
 
   public void onClickManageEmployee() {

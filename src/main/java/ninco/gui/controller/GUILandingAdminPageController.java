@@ -9,7 +9,9 @@ public class GUILandingAdminPageController extends LandingController {
   }
 
   public void onClickRegisterEmployee() {
-
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration("Register Employee", "GUIRegisterEmployeeModal")
+    );
   }
 
   public void onClickReviewProductList() {

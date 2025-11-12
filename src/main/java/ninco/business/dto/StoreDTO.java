@@ -82,4 +82,9 @@ public class StoreDTO implements Record {
   public int getEmployeeCount() {
     return employeeCount;
   }
+
+  @Override
+  public String toString() {
+    return String.format("%s (%s)", name, address);
+  }
 }

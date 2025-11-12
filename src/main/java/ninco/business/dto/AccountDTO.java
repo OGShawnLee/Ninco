@@ -99,4 +99,9 @@ public class AccountDTO {
   public boolean hasPasswordMatch(String candidate) {
     return BCrypt.checkpw(candidate, this.password);
   }
+
+  // TODO: GENERATE A RANDOM PASSWORD THAT IS SENT VIA EMAIL
+  public static String getGeneratedPassword() {
+    return "Password@707";
+  }
 }

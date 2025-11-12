@@ -131,6 +131,7 @@ public class GUISignUpPageController extends Controller {
 
         if (existingAccountDTO != null) {
           AlertFacade.showErrorAndWait("Unable to sign up. An account with this email already exists.");
+          return;
         }
 
         EmployeeDAO.getInstance().createOne(
