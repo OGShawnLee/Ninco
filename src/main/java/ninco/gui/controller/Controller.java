@@ -74,7 +74,6 @@ public abstract class Controller {
         )
       );
       Scene newScene = new Scene(newView);
-
       currentStage.setScene(newScene);
       currentStage.show();
     } catch (IOException e) {
