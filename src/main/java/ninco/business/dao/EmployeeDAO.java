@@ -1,5 +1,6 @@
 package ninco.business.dao;
 
+import ninco.business.dto.AccountDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
@@ -27,9 +28,13 @@ public class EmployeeDAO extends DAOShape<EmployeeDTO> {
     "INSERT INTO Account (email, password, role) VALUES (?, ?, ?)";
   private static final String FIND_ONE_QUERY = "SELECT * FROM CompleteEmployeeView WHERE email = ?";
   private static final String GET_ALL_QUERY = "SELECT * FROM CompleteEmployeeView";
+  private static final String UPDATE_ONE_QUERY =
+    "UPDATE Employee SET name = ?, last_name = ?, store_id = ? WHERE employee_id = ?";
+  private static final String UPDATE_ONE_ACCOUNT_QUERY = "UPDATE Account SET email = ?, role = ?, state = ? WHERE account_id = ?";
   private static EmployeeDAO INSTANCE = new EmployeeDAO();
 
-  private EmployeeDAO() {}
+  private EmployeeDAO() {
+  }
 
   public static EmployeeDAO getInstance() {
     return INSTANCE;
@@ -39,6 +44,7 @@ public class EmployeeDAO extends DAOShape<EmployeeDTO> {
   public EmployeeDTO getDTOInstanceFromResultSet(ResultSet resultSet) throws InvalidFieldException, SQLException {
     return new EmployeeDTO(
       resultSet.getInt("employee_id"),
+      resultSet.getInt("account_id"),
       resultSet.getInt("store_id"),
       resultSet.getString("store_name"),
       resultSet.getString("email"),
@@ -113,6 +119,32 @@ public class EmployeeDAO extends DAOShape<EmployeeDTO> {
       return employeeDTOList;
     } catch (SQLException e) {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar los empleados.");
+    }
+  }
+
+  public void updateOne(EmployeeDTO employeeDTO) throws UserDisplayableException {
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement employeeStatement = connection.prepareStatement(UPDATE_ONE_QUERY);
+      PreparedStatement accountStatement = connection.prepareStatement(UPDATE_ONE_ACCOUNT_QUERY);
+    ) {
+      connection.setAutoCommit(false);
+
+      accountStatement.setString(1, employeeDTO.getEmail());
+      accountStatement.setString(2, employeeDTO.getRole().toString());
+      accountStatement.setString(3, employeeDTO.getState().toString());
+      accountStatement.setInt(4, employeeDTO.getIDAccount());
+
+      employeeStatement.setString(1, employeeDTO.getName());
+      employeeStatement.setString(2, employeeDTO.getLastName());
+      employeeStatement.setInt(3, employeeDTO.getIDStore());
+      employeeStatement.setInt(4, employeeDTO.getID());
+
+      accountStatement.executeUpdate();
+      employeeStatement.executeUpdate();
+      connection.commit();
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible actualizar empleado.");
     }
   }
 

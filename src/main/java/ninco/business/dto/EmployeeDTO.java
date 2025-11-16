@@ -9,19 +9,21 @@ import java.time.LocalDateTime;
 
 public class EmployeeDTO implements Record {
   private int id;
+  private int idAccount;
   private int idStore;
   private String nameStore;
-  private final String email;
-  private final Role role;
-  private final State state;
-  private final String name;
-  private final String lastName;
+  private String email;
+  private Role role;
+  private State state;
+  private String name;
+  private String lastName;
   private LocalDateTime createdAt;
 
   /**
    * Constructor for creating an EmployeeDTO object with all fields from the database.
    *
    * @param id        The unique identifier of the employee
+   * @param idAccount The unique identifier of the Account associated with the employee
    * @param idStore   The unique identifier of the store associated with the employee (null if none)
    * @param nameStore The name of the store associated with the employee (null if none)
    * @param email     The email address associated with the employee
@@ -34,6 +36,7 @@ public class EmployeeDTO implements Record {
    */
   public EmployeeDTO(
     int id,
+    int idAccount,
     int idStore,
     String nameStore,
     String email,
@@ -43,6 +46,7 @@ public class EmployeeDTO implements Record {
     String lastName,
     LocalDateTime createdAt
   ) throws InvalidFieldException {
+    this.idAccount = idAccount;
     this.id = id;
     this.idStore = idStore;
 
@@ -86,8 +90,23 @@ public class EmployeeDTO implements Record {
     this.lastName = Validator.getValidName(lastName, "last-name", 3, 64);
   }
 
+  public EmployeeDTO prepareUpdate(EmployeeDTO employeeDTOFromInput) {
+    this.idStore = employeeDTOFromInput.getIDStore();
+    this.email = employeeDTOFromInput.getEmail();
+    this.role = employeeDTOFromInput.getRole();
+    this.state = employeeDTOFromInput.getState();
+    this.name = employeeDTOFromInput.getName();
+    this.lastName = employeeDTOFromInput.getLastName();
+
+    return this;
+  }
+
   public int getID() {
     return id;
+  }
+
+  public int getIDAccount() {
+    return idAccount;
   }
 
   public int getIDStore() {

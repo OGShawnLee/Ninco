@@ -39,7 +39,7 @@ CREATE TABLE Employee
     last_name   VARCHAR(128) NOT NULL,
     store_id    INT          NULL     DEFAULT NULL,
     created_at  DATETIME(6)  NOT NULL DEFAULT NOW(6),
-    FOREIGN KEY (email) REFERENCES Account (email),
+    FOREIGN KEY (email) REFERENCES Account (email) ON UPDATE CASCADE,
     FOREIGN KEY (store_id) REFERENCES Store (store_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -134,7 +134,7 @@ CREATE TABLE Stock
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-DROP VIEW CompleteProductView;
+DROP VIEW IF EXISTS CompleteProductView;
 CREATE VIEW CompleteProductView AS
 SELECT P.product_id,
        P.name,

@@ -2,7 +2,10 @@ package ninco.gui;
 
 import javafx.scene.control.Alert;
 
+import javafx.scene.control.ButtonType;
 import ninco.common.UserDisplayableException;
+
+import java.util.Optional;
 
 /**
  * AlertFacade is a utility class for displaying various types of alerts in the application.
@@ -23,6 +26,15 @@ public class AlertFacade {
 
   public static void showErrorAndWait(UserDisplayableException e) {
     showErrorAndWait(e.getMessage());
+  }
+
+  public static boolean showConfirmationAndWait(String message) {
+    return new AlertFacade(
+      Alert.AlertType.CONFIRMATION,
+      "Confirmación",
+      "Confirmar Acción",
+      message
+    ).showAndWait().get() == ButtonType.OK;
   }
 
   public static void showErrorAndWait(String message) {
@@ -61,11 +73,11 @@ public class AlertFacade {
     ).showAndWait();
   }
 
-  public void showAndWait() {
+  private Optional<ButtonType> showAndWait() {
     Alert alert = new Alert(type);
     alert.setTitle(title);
     alert.setHeaderText(header);
     alert.setContentText(content);
-    alert.showAndWait();
+    return alert.showAndWait();
   }
 }

@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import ninco.business.AuthClient;
 import ninco.business.dao.AccountDAO;
 import ninco.business.dao.EmployeeDAO;
 import ninco.business.dao.StoreDAO;
@@ -19,7 +20,11 @@ import ninco.common.InvalidFieldException;
 import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
 
-public class GUIRegisterEmployeeModalController extends Controller {
+import java.util.Optional;
+
+public class GUIRegisterEmployeeModalController extends Controller implements ContextController<EmployeeDTO> {
+  @FXML
+  private Label title;
   @FXML
   private Label labelTagEmail;
   @FXML
@@ -40,12 +45,43 @@ public class GUIRegisterEmployeeModalController extends Controller {
   private ComboBox<StoreDTO> fieldStore;
   @FXML
   private Label labelTagFieldStore;
+  private EmployeeDTO editEmployeeDTO;
+
+  @Override
+  public void setContext(EmployeeDTO data) {
+    editEmployeeDTO = data;
+    loadEditData();
+    configureTitle();
+  }
 
   public void initialize() {
     cleanErrorLabels();
     configureFieldRole();
     configureFieldStore();
     configureFieldState();
+  }
+
+  private void configureTitle() {
+    if (editEmployeeDTO == null) return;
+
+    title.setText("Update Employee");
+  }
+
+  private void loadEditData() {
+    if (editEmployeeDTO == null) return;
+
+    fieldName.setText(editEmployeeDTO.getName());
+    fieldLastName.setText(editEmployeeDTO.getLastName());
+    fieldEmail.setText(editEmployeeDTO.getEmail());
+    fieldRole.setValue(editEmployeeDTO.getRole());
+    fieldState.setValue(editEmployeeDTO.getState());
+    getStoreFromStoreID(editEmployeeDTO.getIDStore()).ifPresent(
+      storeDTO -> fieldStore.setValue(storeDTO)
+    );
+  }
+
+  private Optional<StoreDTO> getStoreFromStoreID(int storeID) {
+    return fieldStore.getItems().stream().filter(it -> it.getID() == storeID).findFirst();
   }
 
   private void configureFieldRole() {
@@ -119,7 +155,7 @@ public class GUIRegisterEmployeeModalController extends Controller {
     return isValid;
   }
 
-  public AccountDTO getAccountDTOFromInput() throws InvalidFieldException {
+  private AccountDTO getAccountDTOFromInput() throws InvalidFieldException {
     return new AccountDTO(
       fieldEmail.getText(),
       AccountDTO.getGeneratedPassword(),
@@ -128,7 +164,7 @@ public class GUIRegisterEmployeeModalController extends Controller {
     );
   }
 
-  public EmployeeDTO getEmployeeDTOFromInput() throws InvalidFieldException {
+  private EmployeeDTO getEmployeeDTOFromInput() throws InvalidFieldException {
     return new EmployeeDTO(
       fieldStore.getValue().getID(),
       fieldEmail.getText(),
@@ -139,23 +175,66 @@ public class GUIRegisterEmployeeModalController extends Controller {
     );
   }
 
+  private void registerEmployee(AccountDTO accountDTOFromInput) throws InvalidFieldException, UserDisplayableException {
+    AccountDTO existingAccountDTO = AccountDAO.getInstance().findOne(accountDTOFromInput.getEmail());
+
+    if (existingAccountDTO != null) {
+      AlertFacade.showErrorAndWait("Unable to register employee. An account with this email already exists.");
+      return;
+    }
+
+    EmployeeDAO.getInstance().createOne(
+      getEmployeeDTOFromInput(),
+      accountDTOFromInput.getPassword()
+    );
+    AlertFacade.showSuccessAndWait("Employee registered successfully.");
+  }
+
+  private void updateEmployee() throws InvalidFieldException, UserDisplayableException {
+    EmployeeDTO employeeDTOFromInput = getEmployeeDTOFromInput();
+    Role originalRole = editEmployeeDTO.getRole();
+    boolean shallUpdate = true;
+
+    if (originalRole != employeeDTOFromInput.getRole()) {
+      if (originalRole == Role.CASHIER) {
+        shallUpdate = AlertFacade.showConfirmationAndWait("Are you sure you want to promote this employee from Cashier to Admin?");
+      } else {
+        shallUpdate = AlertFacade.showConfirmationAndWait("Are you sure you want to demote this employee from Admin to Cashier?");
+      }
+    }
+
+    State originalState = editEmployeeDTO.getState();
+    if (shallUpdate && originalState != employeeDTOFromInput.getState()) {
+      if (originalState == State.ACTIVE) {
+        shallUpdate = AlertFacade.showConfirmationAndWait("Are you sure you want to remove this employee's access?");
+      } else {
+        shallUpdate = AlertFacade.showConfirmationAndWait("Are you sure you want to restore this employee's access?");
+      }
+    }
+
+    int originalStore = editEmployeeDTO.getIDStore();
+    if (shallUpdate && originalStore != employeeDTOFromInput.getIDStore()) {
+      shallUpdate = AlertFacade.showConfirmationAndWait("Are you sure you want to update this employee's store?");
+    }
+
+    if (shallUpdate) {
+      EmployeeDAO.getInstance().updateOne(
+        editEmployeeDTO.prepareUpdate(getEmployeeDTOFromInput())
+      );
+      AlertFacade.showSuccessAndWait("Employee updated successfully.");
+    }
+  }
+
   public void onClickRegisterEmployee() {
     try {
       cleanErrorLabels();
       if (isValidData()) {
         AccountDTO accountDTO = getAccountDTOFromInput();
-        AccountDTO existingAccountDTO = AccountDAO.getInstance().findOne(accountDTO.getEmail());
-
-        if (existingAccountDTO != null) {
-          AlertFacade.showErrorAndWait("Unable to register employee. An account with this email already exists.");
-          return;
+        if (editEmployeeDTO == null) {
+          registerEmployee(accountDTO);
+        } else {
+          updateEmployee();
         }
-
-        EmployeeDAO.getInstance().createOne(
-          getEmployeeDTOFromInput(),
-          accountDTO.getPassword()
-        );
-        AlertFacade.showSuccessAndWait("Employee registered successfully.");
       }
     } catch (InvalidFieldException | UserDisplayableException e) {
       AlertFacade.showErrorAndWait(e.getMessage());
