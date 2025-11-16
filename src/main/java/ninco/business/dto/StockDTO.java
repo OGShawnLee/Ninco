@@ -6,61 +6,76 @@ import ninco.common.InvalidFieldException;
 import java.time.LocalDateTime;
 
 public class StockDTO implements Record {
-    private final int product_id;
-    private final int store_id;
-    private final String product_name;
-    private final String store_name;
-    private final int quantity;
-    private final LocalDateTime createdAt;
+  private final int idProduct;
+  private final int idStore;
+  private String productName;
+  private String storeName;
+  private final int quantity;
+  private LocalDateTime createdAt;
 
-    /**
-     * Constructor for creating a ProductDTO object with all fields from the database.
-     *
-     * @param product_id        The unique identifier of the product
-     * @param store_id          The unique identifier of the store
-     * @param product_name      The name of the product
-     * @param store_name        The name of the store
-     * @param quantity          The quantity of every product
-     * @throws InvalidFieldException if any of the fields are invalid
-     */
-    public StockDTO(
-            int product_id,
-            int store_id,
-            String product_name,
-            String store_name,
-            int quantity,
-            LocalDateTime createdAt
-    ) throws InvalidFieldException {
-        this.product_id = product_id;
-        this.store_id = store_id;
-        this.product_name = Validator.getValidName(product_name, "product-name", 3, 128);
-        this.store_name = Validator.getValidName(store_name, "store-name", 3, 128);
-        this.quantity = quantity;
-        this.createdAt = createdAt;
-    }
+  /**
+   * Constructor for creating a StockDTO object with all fields from the database.
+   *
+   * @param idProduct   The unique identifier of the product
+   * @param idStore     The unique identifier of the store
+   * @param productName The name of the product
+   * @param storeName   The name of the store
+   * @param quantity    The quantity of every product
+   * @throws InvalidFieldException if any of the fields are invalid
+   */
+  public StockDTO(
+    int idProduct,
+    int idStore,
+    String productName,
+    String storeName,
+    int quantity,
+    LocalDateTime createdAt
+  ) throws InvalidFieldException {
+    this.idProduct = idProduct;
+    this.idStore = idStore;
+    this.productName = Validator.getValidName(productName, "product-name", 3, 128);
+    this.storeName = Validator.getValidName(storeName, "store-name", 3, 128);
+    this.quantity = quantity;
+    this.createdAt = createdAt;
+  }
 
-    public int getProduct_id() {
-        return product_id;
-    }
+  /**
+   * Constructor for creating a StockDTO object without productName, storeName and createdAt fields.
+   * Typically used when creating a new employee before it is saved to the database.
+   *
+   * @param idProduct The unique identifier of the product
+   * @param idStore   The unique identifier of the store
+   * @param quantity  The quantity of every product
+   * @throws InvalidFieldException if any of the fields are invalid
+   */
+  public StockDTO(int idProduct, int idStore, String quantity) throws InvalidFieldException {
+    this.idProduct = idProduct;
+    this.idStore = idStore;
+    this.quantity = Validator.getValidQuantity(quantity);
+  }
 
-    public int getStore_id() {
-        return store_id;
-    }
+  public int getIDProduct() {
+    return idProduct;
+  }
 
-    public String getProduct_name() {
-        return product_name;
-    }
+  public int getIDStore() {
+    return idStore;
+  }
 
-    public String getStore_name() {
-        return store_name;
-    }
+  public String getProductName() {
+    return productName;
+  }
 
-    public int getQuantity() {
-        return quantity;
-    }
+  public String getStoreName() {
+    return storeName;
+  }
 
-    @Override
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  public int getQuantity() {
+    return quantity;
+  }
+
+  @Override
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 }

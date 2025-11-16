@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ninco.gui.controller.GUIRegisterStockModalController">
+  <children>
+    <VBox layoutX="220.0" layoutY="228.0" prefWidth="360.0" spacing="32.0">
+      <children>
+        <Label fx:id="title" styleClass="title" text="Register Stock"/>
+        <VBox prefWidth="340.0" spacing="16.0">
+          <children>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Product"/>
+                <TextField fx:id="fieldProduct" disable="true" editable="false" styleClass="input"/>
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Store"/>
+                <ComboBox fx:id="fieldStore" maxWidth="1.7976931348623157E308"
+                          promptText="Select the Store where the Product is stored"
+                          styleClass="input"/>
+                <Label fx:id="labelTagStore" text="Label" textFill="RED"/>
+              </children>
+            </VBox>
+            <VBox prefWidth="360.0" spacing="8.0">
+              <children>
+                <Label styleClass="label" text="Quantity"/>
+                <TextField fx:id="fieldQuantity" promptText="Introduce the Quantity of the Product" styleClass="input"/>
+                <Label fx:id="labelTagQuantity" text="Label" textFill="RED"/>
+              </children>
+            </VBox>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStock"
+                    styleClass="button" text="Confirm"/>
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

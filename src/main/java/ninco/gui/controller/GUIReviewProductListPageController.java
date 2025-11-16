@@ -88,6 +88,25 @@ public class GUIReviewProductListPageController extends Controller {
     }
   }
 
+  public void onClickManageStock() {
+    ProductDTO selectedProduct = tableProduct.getSelectionModel().getSelectedItem();
+
+    if (selectedProduct == null) {
+      AlertFacade.showWarningAndWait(
+        "Para realizar esta operación debe seleccionar una fila de la tabla."
+      );
+    } else {
+      ModalFacade.createAndDisplayContextModal(
+        new ModalFacadeConfiguration(
+          "Register Stock",
+          "GUIRegisterStockModal",
+          this::setTableItems
+        ),
+        selectedProduct
+      );
+    }
+  }
+
   public static void navigateToProductListPage(Stage currentStage) {
     navigateTo(currentStage, "Product List", "GUIReviewProductListPage");
   }

@@ -188,4 +188,32 @@ public class Validator {
 
     return Float.parseFloat(price);
   }
+
+  public static ValidationResult getQuantityValidationResult(String quantity) {
+    try {
+      float parsedPrice = Integer.parseInt(quantity);
+
+      if (parsedPrice < 0) {
+        return new ValidationResult("Quantity must be a non-negative number.");
+      }
+
+      return new ValidationResult();
+    } catch (NumberFormatException e) {
+      return new ValidationResult("%s must be a valid integer.");
+    }
+  }
+
+  public static int getValidQuantity(int price) throws InvalidFieldException {
+    return getValidQuantity(Integer.toString(price));
+  }
+
+  public static int getValidQuantity(String price) throws InvalidFieldException {
+    ValidationResult result = getQuantityValidationResult(price);
+
+    if (result.isInvalid()) {
+      throw new InvalidFieldException(result.getMessage(), "quantity");
+    }
+
+    return Integer.parseInt(price);
+  }
 }

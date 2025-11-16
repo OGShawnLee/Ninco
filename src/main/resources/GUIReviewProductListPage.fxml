@@ -21,6 +21,7 @@
               <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button" text="Home" />
               <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterProduct" styleClass="button" text="Register Product" />
               <Button mnemonicParsing="false" onMouseClicked="#onClickManageProduct" styleClass="button" text="Manage Product" />
+              <Button mnemonicParsing="false" onMouseClicked="#onClickManageStock" styleClass="button" text="Manage Stock" />
             </HBox>
           </HBox>
           <TableView fx:id="tableProduct" prefHeight="618.0" prefWidth="950.0">

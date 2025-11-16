@@ -4,37 +4,37 @@ import ninco.gui.modal.ModalFacade;
 import ninco.gui.modal.ModalFacadeConfiguration;
 
 public class GUILandingAdminPageController extends LandingController {
-    public void onClickReviewEmployeeList() {
-        GUIReviewEmployeeListPageController.navigateToEmployeeListPage(getScene());
-    }
+  public void onClickReviewEmployeeList() {
+    GUIReviewEmployeeListPageController.navigateToEmployeeListPage(getScene());
+  }
 
-    public void onClickRegisterEmployee() {
-        ModalFacade.createAndDisplay(
-                new ModalFacadeConfiguration("Register Employee", "GUIRegisterEmployeeModal")
-        );
-    }
+  public void onClickRegisterEmployee() {
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration("Register Employee", "GUIRegisterEmployeeModal")
+    );
+  }
 
-    public void onClickReviewProductList() {
-        GUIReviewProductListPageController.navigateToProductListPage(getScene());
-    }
+  public void onClickReviewProductList() {
+    GUIReviewProductListPageController.navigateToProductListPage(getScene());
+  }
 
-    public void onClickRegisterProduct() {
-        ModalFacade.createAndDisplay(
-                new ModalFacadeConfiguration("Register Product", "GUIRegisterProductModal")
-        );
-    }
+  public void onClickRegisterProduct() {
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration("Register Product", "GUIRegisterProductModal")
+    );
+  }
 
-    public void onClickReviewStoreList() {
-        GUIReviewStoreListPageController.navigateToStoreListPage(getScene());
-    }
+  public void onClickReviewStoreList() {
+    GUIReviewStoreListPageController.navigateToStoreListPage(getScene());
+  }
 
-    public void onClickRegisterStore() {
-        ModalFacade.createAndDisplay(
-                new ModalFacadeConfiguration("Register Store", "GUIRegisterStoreModal")
-        );
-    }
+  public void onClickRegisterStore() {
+    ModalFacade.createAndDisplay(
+      new ModalFacadeConfiguration("Register Store", "GUIRegisterStoreModal")
+    );
+  }
 
-    public void onClickReviewStock() {
-        Controller.navigateTo(getScene(), "Stock", "GUIReviewStockPage");
-    }
+  public void onClickReviewStock() {
+    GUIReviewStockListPageController.navigateToStockListPage(getScene());
+  }
 }
