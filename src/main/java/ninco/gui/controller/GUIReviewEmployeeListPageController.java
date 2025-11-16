@@ -48,7 +48,7 @@ public class GUIReviewEmployeeListPageController extends Controller {
     columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
     columnRole.setCellValueFactory(new PropertyValueFactory<>("role"));
     columnState.setCellValueFactory(new PropertyValueFactory<>("state"));
-    columnStoreName.setCellValueFactory(new PropertyValueFactory<>("StoreName"));
+    columnStoreName.setCellValueFactory(new PropertyValueFactory<>("NameStore"));
     columnFormattedCreatedAt.setCellValueFactory(new PropertyValueFactory<>("formattedCreatedAt"));
   }
 
@@ -82,7 +82,14 @@ public class GUIReviewEmployeeListPageController extends Controller {
         "Para realizar esta operación debe seleccionar una fila de la tabla."
       );
     } else {
-      // TODO: Add Manage Store Use Case
+      ModalFacade.createAndDisplayContextModal(
+        new ModalFacadeConfiguration(
+          "Update Employee",
+          "GUIRegisterEmployeeModal",
+          this::setTableItems
+        ),
+        selectedEmployee
+      );
     }
   }
 
