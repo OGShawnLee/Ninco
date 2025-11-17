@@ -1,5 +1,6 @@
 package ninco.business.dao;
 
+import ninco.business.dto.StoreDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,9 +20,11 @@ public class StockDAO extends DAOShape<StockDTO> {
   private static final Logger LOGGER = LogManager.getLogger(StockDAO.class);
   private static final String CREATE_ONE_QUERY = "INSERT INTO STOCK (product_id, store_id, quantity) VALUES (?, ?, ?)";
   private static final String GET_ALL_QUERY = "SELECT * FROM CompleteStockView";
+  private static final String GET_ALL_BY_STORE = "SELECT * FROM CompleteStockView WHERE store_id = ?";
   private static final StockDAO INSTANCE = new StockDAO();
 
-  private StockDAO() {}
+  private StockDAO() {
+  }
 
   public static StockDAO getInstance() {
     return INSTANCE;
@@ -35,6 +38,7 @@ public class StockDAO extends DAOShape<StockDTO> {
       resultSet.getString("product_name"),
       resultSet.getString("store_name"),
       resultSet.getInt("quantity"),
+      resultSet.getFloat("price"),
       resultSet.getTimestamp("created_at").toLocalDateTime()
     );
   }
@@ -65,6 +69,27 @@ public class StockDAO extends DAOShape<StockDTO> {
 
       while (resultSet.next()) {
         stockDTOList.add(createDTOInstanceFromResultSet(resultSet));
+      }
+
+      return stockDTOList;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar el inventario.");
+    }
+  }
+
+  public ArrayList<StockDTO> getAllByStore(StoreDTO storeDTO) throws UserDisplayableException {
+    ArrayList<StockDTO> stockDTOList = new ArrayList<>();
+
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareStatement(GET_ALL_BY_STORE);
+    ) {
+      statement.setInt(1, storeDTO.getID());
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          stockDTOList.add(createDTOInstanceFromResultSet(resultSet));
+        }
       }
 
       return stockDTOList;

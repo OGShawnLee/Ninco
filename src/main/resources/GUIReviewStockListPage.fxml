@@ -21,15 +21,21 @@
           <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
             <HBox alignment="CENTER" spacing="16.0">
               <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button" text="Home"/>
+              <Button fx:id="buttonStartNewInvoice" mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
+                      text="Start New Invoice"/>
             </HBox>
           </HBox>
           <TableView fx:id="tableStock" prefHeight="618.0" prefWidth="950.0">
             <columns>
               <TableColumn fx:id="columnProductName" prefWidth="240.0" text="Product Name"/>
               <TableColumn fx:id="columnStoreName" prefWidth="240.0" styleClass="column" text="Store Name"/>
-              <TableColumn fx:id="columnQuantity" minWidth="0.0" prefWidth="140.0" styleClass="column" text="Quantity"/>
-              <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="180.0" text="Registered At"/>
+              <TableColumn fx:id="columnQuantity" prefWidth="140.0" styleClass="column" text="Quantity"/>
+              <TableColumn fx:id="columnPrice" prefWidth="140.0" styleClass="column" text="Price"/>
+              <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="190.0" text="Registered At"/>
             </columns>
+            <VBox.margin>
+              <Insets/>
+            </VBox.margin>
           </TableView>
         </children>
         <padding>

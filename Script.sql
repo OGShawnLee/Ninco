@@ -46,7 +46,8 @@ CREATE TABLE Employee
   COLLATE = utf8mb4_unicode_ci;
 
 CREATE VIEW CompleteEmployeeView AS
-SELECT E.employee_id,
+SELECT A.account_id,
+       E.employee_id,
        E.email,
        E.name,
        E.last_name,
@@ -114,6 +115,7 @@ CREATE TABLE Sale
     employee_id INT            NOT NULL,
     amount      INT            NOT NULL CHECK (amount > 0),
     price       DECIMAL(10, 2) NOT NULL,
+    created_at  DATETIME(6)    NOT NULL DEFAULT NOW(6),
     FOREIGN KEY (invoice_id) REFERENCES Invoice (invoice_id),
     FOREIGN KEY (employee_id) REFERENCES Employee (employee_id),
     FOREIGN KEY (store_id) REFERENCES Store (store_id)
@@ -124,15 +126,29 @@ CREATE TABLE Sale
 -- Table: Stock
 CREATE TABLE Stock
 (
-    product_id INT NOT NULL,
-    store_id   INT NOT NULL,
-    quantity   INT NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+    product_id INT         NOT NULL,
+    store_id   INT         NOT NULL,
+    quantity   INT         NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+    created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
     PRIMARY KEY (product_id, store_id),
     FOREIGN KEY (product_id) REFERENCES Product (product_id),
     FOREIGN KEY (store_id) REFERENCES Store (store_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+DROP VIEW IF EXISTS CompleteStockView;
+CREATE VIEW CompleteStockView AS
+SELECT ST.product_id,
+       ST.store_id,
+       quantity,
+       P.name  AS product_name,
+       S.name  AS store_name,
+       P.price AS price,
+       ST.created_at
+FROM Stock ST
+         JOIN Store S ON S.store_id = ST.store_id
+         JOIN Product P on ST.product_id = P.product_id;
 
 DROP VIEW IF EXISTS CompleteProductView;
 CREATE VIEW CompleteProductView AS

@@ -11,6 +11,7 @@ public class StockDTO implements Record {
   private String productName;
   private String storeName;
   private final int quantity;
+  private float price;
   private LocalDateTime createdAt;
 
   /**
@@ -29,6 +30,7 @@ public class StockDTO implements Record {
     String productName,
     String storeName,
     int quantity,
+    float price,
     LocalDateTime createdAt
   ) throws InvalidFieldException {
     this.idProduct = idProduct;
@@ -36,6 +38,7 @@ public class StockDTO implements Record {
     this.productName = Validator.getValidName(productName, "product-name", 3, 128);
     this.storeName = Validator.getValidName(storeName, "store-name", 3, 128);
     this.quantity = quantity;
+    this.price = Validator.getValidPrice(price, "product-price");
     this.createdAt = createdAt;
   }
 
@@ -72,6 +75,10 @@ public class StockDTO implements Record {
 
   public int getQuantity() {
     return quantity;
+  }
+
+  public float getPrice() {
+    return price;
   }
 
   @Override

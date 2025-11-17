@@ -19,6 +19,7 @@ public class StoreDAO extends DAOShape<StoreDTO> {
   private static final Logger LOGGER = LogManager.getLogger(StoreDAO.class);
   private static final String CREATE_ONE_QUERY = "INSERT INTO Store (name, address, phone) VALUES (?, ?, ?)";
   private static final String GET_ALL_QUERY = "SELECT * FROM CompleteStoreView";
+  private static final String GET_ONE_QUERY = "SELECT * FROM CompleteStoreView WHERE store_id = ?";
   private static final String FIND_ONE_QUERY_BY_PHONE_NUMBER = "SELECT * FROM CompleteStoreView WHERE phone = ?";
   private static final String UPDATE_ONE_QUERY =
     "UPDATE Store set name = ?, address = ?, phone = ? WHERE store_id = ?";
@@ -91,6 +92,25 @@ public class StoreDAO extends DAOShape<StoreDTO> {
       return storeDTOList;
     } catch (SQLException e) {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar las tiendas.");
+    }
+  }
+
+  public StoreDTO getOne(int idStore) throws UserDisplayableException {
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareStatement(GET_ONE_QUERY)
+    ) {
+      statement.setInt(1, idStore);
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+          return createDTOInstanceFromResultSet(resultSet);
+        }
+      }
+
+      throw new UserDisplayableException("No ha sido posible cargar element por que no existe en la base de datos.");
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar la tienda.");
     }
   }
 
