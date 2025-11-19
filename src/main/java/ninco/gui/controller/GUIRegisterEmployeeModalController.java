@@ -125,19 +125,9 @@ public class GUIRegisterEmployeeModalController extends Controller implements Co
       isValid = false;
     }
 
-    result = Validator.getIsInvalidNameResult(fieldName.getText(), "Name", 3, 64);
-    if (result.isInvalid()) {
-      labelTagName.setText(result.getMessage());
-      isValid = false;
-    }
+      isValid = GUISignUpPageController.isValid(isValid, fieldName, labelTagName, fieldLastName, labelTagLastName);
 
-    result = Validator.getIsInvalidNameResult(fieldLastName.getText(), "Last Name", 3, 64);
-    if (result.isInvalid()) {
-      labelTagLastName.setText(result.getMessage());
-      isValid = false;
-    }
-
-    if (fieldRole.getValue() == null) {
+      if (fieldRole.getValue() == null) {
       AlertFacade.showErrorAndWait("Unable to register employee. Please select a Role.");
       isValid = false;
     }

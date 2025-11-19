@@ -7,17 +7,26 @@ import javafx.scene.control.TextField;
 
 import ninco.business.dao.AccountDAO;
 import ninco.business.dao.EmployeeDAO;
+import ninco.business.dao.PendingRegistrationsDAO;
 import ninco.business.dto.AccountDTO;
 import ninco.business.dto.EmployeeDTO;
+import ninco.business.dto.PendingRegistrationDTO;
+import ninco.business.dto.SignUpContext;
 import ninco.business.enumeration.Role;
 import ninco.business.enumeration.State;
 import ninco.business.rules.ValidationResult;
 import ninco.business.rules.Validator;
+import ninco.common.EmailService;
 import ninco.common.InvalidFieldException;
 import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
+import ninco.gui.modal.ModalFacade;
+import ninco.gui.modal.ModalFacadeConfiguration;
+import org.mindrot.jbcrypt.BCrypt;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Random;
 
 public class GUISignUpPageController extends Controller {
   @FXML
@@ -87,6 +96,13 @@ public class GUISignUpPageController extends Controller {
       }
     }
 
+    isValid = isValid(isValid, fieldName, labelTagName, fieldLastName, labelTagLastName);
+
+    return isValid;
+  }
+
+  static boolean isValid(boolean isValid, TextField fieldName, Label labelTagName, TextField fieldLastName, Label labelTagLastName) {
+    ValidationResult result;
     result = Validator.getIsInvalidNameResult(fieldName.getText(), "Name", 3, 64);
     if (result.isInvalid()) {
       labelTagName.setText(result.getMessage());
@@ -98,7 +114,6 @@ public class GUISignUpPageController extends Controller {
       labelTagLastName.setText(result.getMessage());
       isValid = false;
     }
-
     return isValid;
   }
 
@@ -127,20 +142,47 @@ public class GUISignUpPageController extends Controller {
       cleanErrorLabels();
       if (isValidData()) {
         AccountDTO accountDTO = getAccountDTOFromInput();
-        AccountDTO existingAccountDTO = AccountDAO.getInstance().findOne(accountDTO.getEmail());
 
-        if (existingAccountDTO != null) {
-          AlertFacade.showErrorAndWait("Unable to sign up. An account with this email already exists.");
+        if (AccountDAO.getInstance().findOne(accountDTO.getEmail()) != null) {
+          AlertFacade.showErrorAndWait("No es posible registrarse. Ya existe una cuenta con este email.");
           return;
         }
 
-        EmployeeDAO.getInstance().createOne(
-          getEmployeeDTOFromInput(),
-          accountDTO.getPassword()
+        String pin = String.format("%06d", new Random().nextInt(999999));
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(15);
+
+        String hashedPassword = BCrypt.hashpw(accountDTO.getPassword(), BCrypt.gensalt());
+
+        PendingRegistrationDTO pendingDTO = new PendingRegistrationDTO(
+                accountDTO.getEmail(),
+                pin,
+                expiresAt,
+                hashedPassword,
+                accountDTO.getRole()
         );
-        AlertFacade.showSuccessAndWait("Admin account created successfully!");
-        AlertFacade.showSuccessAndWait("Please log in with your new credentials.");
-        navigateFromThisPageTo("Log In Page", "GUILogInPage");
+
+        PendingRegistrationsDAO.getInstance().save(pendingDTO);
+
+        try {
+          EmailService.sendVerificationCode(accountDTO.getEmail(), pin);
+        } catch (UserDisplayableException e) {
+          AlertFacade.showErrorAndWait("Error al enviar correo: " + e.getMessage());
+          return;
+        }
+
+        SignUpContext context = new SignUpContext(getEmployeeDTOFromInput(), accountDTO.getPassword());
+
+        ModalFacade.createAndDisplayContextModal(
+                new ModalFacadeConfiguration("Verificar Cuenta", "GUIAccountVerificationModal", () -> {
+                  try {
+                    if (AccountDAO.getInstance().findOne(accountDTO.getEmail()) != null) {
+                      navigateFromThisPageTo("Log In Page", "GUILogInPage");
+                    }
+                  } catch (Exception ignored) {
+                  }
+                }),
+                context
+        );
       }
     } catch (InvalidFieldException | UserDisplayableException e) {
       AlertFacade.showErrorAndWait(e.getMessage());
