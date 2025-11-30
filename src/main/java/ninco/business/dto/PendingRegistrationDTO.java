@@ -1,16 +1,16 @@
 package ninco.business.dto;
 
-import javax.management.relation.Role;
+import ninco.business.enumeration.Role;
 import java.time.LocalDateTime;
 
 public class PendingRegistrationDTO {
     private int id;
-    private String email;
-    private String pin;
-    private LocalDateTime expiresAt;
+    private final String email;
+    private final String pin;
+    private final LocalDateTime expiresAt;
     private LocalDateTime createdAt;
-    private String password;
-    private Role role;
+    private final String password;
+    private final Role role;
 
     public PendingRegistrationDTO(int id, String email, String pin, LocalDateTime expiresAt, LocalDateTime createdAt, String password, Role role) {
         this.id = id;
@@ -22,7 +22,12 @@ public class PendingRegistrationDTO {
         this.role = role;
     }
 
-    public PendingRegistrationDTO(String email, String pin, LocalDateTime expiresAt, String hashedPassword, ninco.business.enumeration.Role role) {
+    public PendingRegistrationDTO(String email, String pin, LocalDateTime expiresAt, String hashedPassword, Role role) {
+        this.email = email;
+        this.pin = pin;
+        this.expiresAt = expiresAt;
+        this.password = hashedPassword;
+        this.role = role;
     }
 
     public int getId() {

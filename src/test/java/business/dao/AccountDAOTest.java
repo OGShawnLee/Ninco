@@ -41,23 +41,18 @@ class AccountDAOTest {
 
     @Test
     void findOne_WhenUserExists_ShouldReturnAccountDTO() throws SQLException, Exception {
-        // ARRANGE
         String testEmail = "test@ninco.com";
         LocalDateTime now = LocalDateTime.now();
 
-        // 'try-with-resources' ensures the static mock is closed after the test
         try (MockedStatic<DBConnector> mockedDB = mockStatic(DBConnector.class)) {
 
-            // 1. Mock the static singleton chain
             mockedDB.when(DBConnector::getInstance).thenReturn(dbConnectorMock);
             when(dbConnectorMock.getConnection()).thenReturn(connectionMock);
 
-            // 2. Mock the SQL execution
             when(connectionMock.prepareStatement(anyString())).thenReturn(statementMock);
             when(statementMock.executeQuery()).thenReturn(resultSetMock);
 
-            // 3. Mock the ResultSet data
-            when(resultSetMock.next()).thenReturn(true); // Found one row
+            when(resultSetMock.next()).thenReturn(true);
             when(resultSetMock.getInt("account_id")).thenReturn(1);
             when(resultSetMock.getString("email")).thenReturn(testEmail);
             when(resultSetMock.getString("password")).thenReturn("hashedPass");
@@ -65,16 +60,13 @@ class AccountDAOTest {
             when(resultSetMock.getString("state")).thenReturn("ACTIVE");
             when(resultSetMock.getTimestamp("created_at")).thenReturn(Timestamp.valueOf(now));
 
-            // ACT
             AccountDTO result = accountDAO.findOne(testEmail);
 
-            // ASSERT
             assertNotNull(result, "Result should not be null when user exists");
             assertEquals(testEmail, result.getEmail());
             assertEquals(Role.ADMIN, result.getRole());
             assertEquals(State.ACTIVE, result.getState());
 
-            // Verify resources are closed (good JDBC practice)
             verify(resultSetMock).close();
             verify(statementMock).close();
             verify(connectionMock).close();
@@ -122,7 +114,7 @@ class AccountDAOTest {
             when(statementMock.executeQuery()).thenReturn(resultSetMock);
 
             when(resultSetMock.next()).thenReturn(true);
-            when(resultSetMock.getInt(1)).thenReturn(1); // Count is 1
+            when(resultSetMock.getInt(1)).thenReturn(1);
 
             boolean result = accountDAO.isThereAnAdminAccount();
 
@@ -139,7 +131,7 @@ class AccountDAOTest {
             when(statementMock.executeQuery()).thenReturn(resultSetMock);
 
             when(resultSetMock.next()).thenReturn(true);
-            when(resultSetMock.getInt(1)).thenReturn(0); // Count is 0
+            when(resultSetMock.getInt(1)).thenReturn(0);
 
             boolean result = accountDAO.isThereAnAdminAccount();
 
