@@ -45,3 +45,9 @@ SELECT ST.product_id,
 FROM Stock ST
          JOIN Store S ON S.store_id = ST.store_id
          JOIN Product P on ST.product_id = P.product_id;
+
+-- 4. Fix for 'Sale' table missing 'product_id'
+-- The original schema tracked the sale but not WHICH product was sold.
+-- This is critical for the checkout process.
+ALTER TABLE Sale ADD COLUMN product_id INT NOT NULL AFTER employee_id;
+ALTER TABLE Sale ADD CONSTRAINT fk_sale_product FOREIGN KEY (product_id) REFERENCES Product (product_id);
