@@ -103,4 +103,27 @@ public class ProductDAO extends DAOShape<ProductDTO> {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible actualizar producto.");
     }
   }
+
+  public ProductDTO searchByNameOrCode(String query) throws UserDisplayableException {
+    String sql = "SELECT * FROM CompleteProductView WHERE name LIKE ? OR product_id = ?";
+    try (Connection connection = DBConnector.getInstance().getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql)) {
+
+      statement.setString(1, "%" + query + "%");
+      try {
+        statement.setInt(2, Integer.parseInt(query));
+      } catch (NumberFormatException e) {
+        statement.setInt(2, -1); // Si no es número, no busca por ID
+      }
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+          return createDTOInstanceFromResultSet(resultSet);
+        }
+      }
+      return null;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "Error searching product.");
+    }
+  }
 }

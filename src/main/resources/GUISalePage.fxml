@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ninco.gui.controller.GUISalePageController">
+    <children>
+        <VBox layoutX="140.0" layoutY="50.0" prefWidth="1000.0" spacing="20.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <Label styleClass="title" text="New Sale" />
+
+                    <Label fx:id="labelClientName" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Client: " />
+
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button mnemonicParsing="false" onAction="#onClickCancel" styleClass="button" text="Cancel Sale" />
+                </HBox>
+
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <Label text="Search Product:" />
+                    <TextField fx:id="fieldSearchProduct" prefWidth="300.0" promptText="Enter product name..." styleClass="input" />
+                    <Button mnemonicParsing="false" onAction="#onClickAddProduct" styleClass="button" text="Add to Cart" />
+                </HBox>
+
+                <TableView fx:id="tableCart" prefHeight="500.0">
+                    <columns>
+                        <TableColumn fx:id="colName" prefWidth="400.0" text="Product" />
+                        <TableColumn fx:id="colPrice" prefWidth="150.0" text="Price" />
+                        <TableColumn fx:id="colQuantity" prefWidth="150.0" text="Quantity" />
+                        <TableColumn fx:id="colSubtotal" prefWidth="200.0" text="Subtotal" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                    <Button mnemonicParsing="false" onAction="#onClickRemoveItem" style="-fx-background-color: #ffcccc;" text="Remove Selected Item" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="labelTotal" styleClass="title" text="Total: $0.00" />
+                    <Button mnemonicParsing="false" onAction="#onClickCheckout" styleClass="button" style="-fx-font-size: 16px;" text="Checkout" />
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
