@@ -6,11 +6,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ninco.business.AuthClient;
+import ninco.business.dao.InvoiceDAO;
 import ninco.business.dao.ProductDAO;
 import ninco.business.dao.StockDAO;
 import ninco.business.dto.CartItemDTO;
+import ninco.business.dto.EmployeeDTO;
 import ninco.business.dto.ProductDTO;
+import ninco.common.ReceiptGenerator;
+import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
+
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class GUISalePageController extends Controller implements ContextController<String> {
@@ -32,6 +38,7 @@ public class GUISalePageController extends Controller implements ContextControll
     public void initialize() {
         cartItems = FXCollections.observableArrayList();
         configureTable();
+        updateTotal();
     }
 
     @Override
@@ -39,8 +46,6 @@ public class GUISalePageController extends Controller implements ContextControll
         this.clientName = clientName;
         if (labelClientName != null) {
             labelClientName.setText("Client: " + clientName);
-        } else {
-            System.err.println("ADVERTENCIA: labelClientName no se inyectó correctamente.");
         }
     }
 
@@ -55,7 +60,7 @@ public class GUISalePageController extends Controller implements ContextControll
     public void onClickAddProduct() {
         String query = fieldSearchProduct.getText().trim();
         if (query.isEmpty()) {
-            AlertFacade.showWarningAndWait("Please enter a product name.");
+            AlertFacade.showWarningAndWait("Please enter a product name or ID.");
             return;
         }
 
@@ -66,15 +71,35 @@ public class GUISalePageController extends Controller implements ContextControll
                 return;
             }
 
+            int storeId = AuthClient.getInstance().getCurrentUser().getIDStore();
+            int currentStock = stockDAO.getCurrentStockByProduct(storeId, product.getProductId());
+
+            if (currentStock <= 0) {
+                AlertFacade.showWarningAndWait("Out of stock.");
+                return;
+            }
+            
             TextInputDialog dialog = new TextInputDialog("1");
             dialog.setTitle("Quantity");
-            dialog.setHeaderText("Add " + product.getName());
-            dialog.setContentText("Enter quantity:");
+            dialog.setHeaderText("Add: " + product.getName());
+            dialog.setContentText("Available: " + currentStock + ". Enter quantity:");
 
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
-                int qty = Integer.parseInt(result.get());
-                addItemToCart(product, qty);
+                try {
+                    int qty = Integer.parseInt(result.get());
+                    if (qty <= 0) {
+                        AlertFacade.showWarningAndWait("Quantity must be positive.");
+                        return;
+                    }
+                    if (qty > currentStock) {
+                        AlertFacade.showWarningAndWait("Not enough stock. Available: " + currentStock);
+                        return;
+                    }
+                    addItemToCart(product, qty);
+                } catch (NumberFormatException e) {
+                    AlertFacade.showWarningAndWait("Invalid number.");
+                }
             }
 
         } catch (Exception e) {
@@ -84,12 +109,13 @@ public class GUISalePageController extends Controller implements ContextControll
 
     private void addItemToCart(ProductDTO product, int qty) {
         Optional<CartItemDTO> existing = cartItems.stream()
-                .filter(i -> i.getProduct().getID() == product.getID())
+                .filter(i -> i.getProduct().getProductId() == product.getProductId())
                 .findFirst();
 
         if (existing.isPresent()) {
             CartItemDTO item = existing.get();
             item.setQuantity(item.getQuantity() + qty);
+            tableCart.refresh();
         } else {
             cartItems.add(new CartItemDTO(product, qty));
         }
@@ -102,6 +128,8 @@ public class GUISalePageController extends Controller implements ContextControll
         if (selected != null) {
             cartItems.remove(selected);
             updateTotal();
+        } else {
+            AlertFacade.showWarningAndWait("Select an item to remove.");
         }
     }
 
@@ -114,11 +142,44 @@ public class GUISalePageController extends Controller implements ContextControll
 
     public void onClickCancel() {
         if (AlertFacade.showConfirmationAndWait("Cancel sale? Data will be lost.")) {
-            navigateToLandingPage();
+            try {
+                navigateFromThisPageTo("Cashier Dashboard", "GUILandingCashierPage");
+            } catch (Exception e) {
+                AlertFacade.showErrorAndWait("Error navigating back.");
+            }
         }
     }
 
     public void onClickCheckout() {
-        AlertFacade.showInformationAndWait("Checkout logic pending implementation.");
+        if (cartItems.isEmpty()) {
+            AlertFacade.showWarningAndWait("Cart is empty.");
+            return;
+        }
+
+        if (AlertFacade.showConfirmationAndWait("Confirm Sale?")) {
+            try {
+                EmployeeDTO user = AuthClient.getInstance().getCurrentUser();
+                InvoiceDAO.getInstance().createInvoiceTransaction(
+                        user.getIDStore(),
+                        user.getID(),
+                        clientName,
+                        cartItems
+                );
+
+                double total = cartItems.stream().mapToDouble(CartItemDTO::getSubtotal).sum();
+                String filePath = ReceiptGenerator.generateReceipt(clientName, cartItems, total);
+
+                AlertFacade.showSuccessAndWait("Sale completed! Receipt saved at:\n" + filePath);
+
+                AlertFacade.showSuccessAndWait("Sale completed!");
+                navigateFromThisPageTo("Cashier Dashboard", "GUILandingCashierPage");
+
+            } catch (UserDisplayableException e) {
+                AlertFacade.showErrorAndWait(e.getMessage());
+            } catch (Exception e) {
+                AlertFacade.showErrorAndWait("Unexpected error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 }

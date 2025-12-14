@@ -86,4 +86,8 @@ public class ProductDTO implements Record {
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
+
+  public int getProductId() {
+    return id;
+  }
 }

@@ -12,16 +12,14 @@
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="20.0">
                     <Label styleClass="title" text="New Sale" />
-
                     <Label fx:id="labelClientName" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Client: " />
-
                     <Region HBox.hgrow="ALWAYS" />
                     <Button mnemonicParsing="false" onAction="#onClickCancel" styleClass="button" text="Cancel Sale" />
                 </HBox>
 
                 <HBox spacing="10.0" alignment="CENTER_LEFT">
                     <Label text="Search Product:" />
-                    <TextField fx:id="fieldSearchProduct" prefWidth="300.0" promptText="Enter product name..." styleClass="input" />
+                    <TextField fx:id="fieldSearchProduct" prefWidth="300.0" promptText="Name or ID..." styleClass="input" />
                     <Button mnemonicParsing="false" onAction="#onClickAddProduct" styleClass="button" text="Add to Cart" />
                 </HBox>
 
@@ -35,7 +33,7 @@
                 </TableView>
 
                 <HBox alignment="CENTER_RIGHT" spacing="20.0">
-                    <Button mnemonicParsing="false" onAction="#onClickRemoveItem" style="-fx-background-color: #ffcccc;" text="Remove Selected Item" />
+                    <Button mnemonicParsing="false" onAction="#onClickRemoveItem" style="-fx-background-color: #ffcccc;" text="Remove Item" />
                     <Region HBox.hgrow="ALWAYS" />
                     <Label fx:id="labelTotal" styleClass="title" text="Total: $0.00" />
                     <Button mnemonicParsing="false" onAction="#onClickCheckout" styleClass="button" style="-fx-font-size: 16px;" text="Checkout" />

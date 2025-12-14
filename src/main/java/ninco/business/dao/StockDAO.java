@@ -97,4 +97,24 @@ public class StockDAO extends DAOShape<StockDTO> {
       throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar el inventario.");
     }
   }
+
+  public int getCurrentStockByProduct(int storeId, int productId) throws UserDisplayableException {
+    String query = "SELECT quantity FROM Stock WHERE store_id = ? AND product_id = ?";
+
+    try (Connection connection = DBConnector.getInstance().getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+      statement.setInt(1, storeId);
+      statement.setInt(2, productId);
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+          return resultSet.getInt("quantity");
+        }
+      }
+      return 0;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "Error fetching stock.");
+    }
+  }
 }
