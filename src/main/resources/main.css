@@ -1,5 +1,27 @@
-.button, .column, .input, .label, .title, .text-area, .error-tag {
+@font-face {
+    font-family: "Geist";
+    src: url("/fonts/Geist-Regular.otf");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Geist";
+    src: url("/fonts/Geist-Bold.otf");
+    font-weight: bold;
+}
+
+.button, .column, .input, .label, .title, .text-area, .error-tag, .page-title {
     -fx-font-family: "Geist";
+}
+
+:disabled {
+    -fx-opacity: 0.85;
+}
+
+.page-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
 }
 
 .button, .input {
@@ -12,7 +34,7 @@
 }
 
 .text-area {
-    -fx-pref-height: 64px;
+    -fx-pref-height: 128px;
 }
 
 .text-notable {
