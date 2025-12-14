@@ -43,5 +43,6 @@ bin/
 
 ### Custom
 src/main/resources/db.properties
+src/main/resources/mail.properties
 logs/
 .idea

@@ -15,7 +15,7 @@ import ninco.common.ExceptionHandler;
 import ninco.common.UserDisplayableException;
 
 /**
- * <b>DBConnector</b> is a singleton class responsible for managing the database connection.
+ * DBConnector is a singleton class responsible for managing the database connection.
  * It reads the database configuration from a properties file and provides a method
  * to obtain a connection to the database.
  */
@@ -31,6 +31,7 @@ public class DBConnector {
   /**
    * Private constructor to initialize the DBConnector instance.
    * Loads database configuration from the properties file.
+   *
    * @throws UserDisplayableException if an error occurs during initialization
    */
   private DBConnector() throws UserDisplayableException {
@@ -53,6 +54,7 @@ public class DBConnector {
 
   /**
    * Converts an IOException during DB initialization into a UserDisplayableException.
+   *
    * @param e the IOException to handle
    * @return UserDisplayableException with a user-friendly message
    */
@@ -62,6 +64,7 @@ public class DBConnector {
 
   /**
    * Handles the case when the database configuration file is not found.
+   *
    * @param e the FileNotFoundException to handle
    * @return UserDisplayableException with a user-friendly message
    */
@@ -74,6 +77,7 @@ public class DBConnector {
 
   /**
    * Verifies that the database connection properties are properly set.
+   *
    * @throws UserDisplayableException if any property is missing
    */
   private void handlePropertiesVerification() throws UserDisplayableException {
@@ -87,6 +91,7 @@ public class DBConnector {
 
   /**
    * Returns the singleton instance of DBConnector.
+   *
    * @return DBConnector instance
    * @throws UserDisplayableException if an error occurs during initialization
    */
@@ -100,6 +105,7 @@ public class DBConnector {
 
   /**
    * Establishes and returns a connection to the database.
+   *
    * @return Connection to the database
    * @throws UserDisplayableException if a database access error occurs
    */

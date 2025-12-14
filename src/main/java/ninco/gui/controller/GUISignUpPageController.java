@@ -154,17 +154,17 @@ public class GUISignUpPageController extends Controller {
         String hashedPassword = BCrypt.hashpw(accountDTO.getPassword(), BCrypt.gensalt());
 
         PendingRegistrationDTO pendingDTO = new PendingRegistrationDTO(
-                accountDTO.getEmail(),
-                pin,
-                expiresAt,
-                hashedPassword,
-                accountDTO.getRole()
+          accountDTO.getEmail(),
+          pin,
+          expiresAt,
+          hashedPassword,
+          accountDTO.getRole()
         );
 
         PendingRegistrationsDAO.getInstance().save(pendingDTO);
 
         try {
-          EmailService.sendVerificationCode(accountDTO.getEmail(), pin);
+          EmailService.getInstance().sendVerificationCode(accountDTO.getEmail(), pin);
         } catch (UserDisplayableException e) {
           AlertFacade.showErrorAndWait("Error al enviar correo: " + e.getMessage());
           return;
@@ -173,15 +173,15 @@ public class GUISignUpPageController extends Controller {
         SignUpContext context = new SignUpContext(getEmployeeDTOFromInput(), accountDTO.getPassword());
 
         ModalFacade.createAndDisplayContextModal(
-                new ModalFacadeConfiguration("Verificar Cuenta", "GUIAccountVerificationModal", () -> {
-                  try {
-                    if (AccountDAO.getInstance().findOne(accountDTO.getEmail()) != null) {
-                      navigateFromThisPageTo("Log In Page", "GUILogInPage");
-                    }
-                  } catch (Exception ignored) {
-                  }
-                }),
-                context
+          new ModalFacadeConfiguration("Verificar Cuenta", "GUIAccountVerificationModal", () -> {
+            try {
+              if (AccountDAO.getInstance().findOne(accountDTO.getEmail()) != null) {
+                navigateFromThisPageTo("Log In Page", "GUILogInPage");
+              }
+            } catch (Exception ignored) {
+            }
+          }),
+          context
         );
       }
     } catch (InvalidFieldException | UserDisplayableException e) {
