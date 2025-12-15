@@ -1,9 +1,11 @@
 package ninco.gui.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -18,8 +20,6 @@ public class GUIReviewStoreListPageController extends Controller {
   @FXML
   private TableView<StoreDTO> tableStore;
   @FXML
-  private TableColumn<StoreDTO, String> columnStoreID;
-  @FXML
   private TableColumn<StoreDTO, String> columnName;
   @FXML
   private TableColumn<StoreDTO, String> columnAddress;
@@ -29,6 +29,8 @@ public class GUIReviewStoreListPageController extends Controller {
   private TableColumn<StoreDTO, String> columnEmployeeCount;
   @FXML
   private TableColumn<StoreDTO, String> columnFormattedCreatedAt;
+  @FXML
+  private TextField fieldSearch;
 
   public void initialize() {
     configureTableColumns();
@@ -36,7 +38,6 @@ public class GUIReviewStoreListPageController extends Controller {
   }
 
   public void configureTableColumns() {
-    columnStoreID.setCellValueFactory(new PropertyValueFactory<>("ID"));
     columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
     columnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
     columnPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
@@ -44,22 +45,26 @@ public class GUIReviewStoreListPageController extends Controller {
     columnFormattedCreatedAt.setCellValueFactory(new PropertyValueFactory<>("formattedCreatedAt"));
   }
 
+  private void configureSearch(ObservableList<StoreDTO> storeDTOObservableList) {
+    useConfigureSearch(fieldSearch, storeDTOObservableList, tableStore);
+  }
+
   public void setTableItems() {
     try {
-      tableStore.setItems(
-        FXCollections.observableList(StoreDAO.getInstance().getAll())
-      );
+      ObservableList<StoreDTO> storeDTOObservableList = FXCollections.observableList(StoreDAO.getInstance().getAll());
+
+      tableStore.setItems(storeDTOObservableList);
+      configureSearch(storeDTOObservableList);
     } catch (UserDisplayableException e) {
-      AlertFacade.showErrorAndWait(
-        "No ha sido posible recuperar información debido a un error en la base de datos, intente de nuevo más tarde."
-      );
+      AlertFacade.showErrorAndWait(e);
     }
   }
+
 
   public void onClickRegisterStore() {
     ModalFacade.createAndDisplay(
       new ModalFacadeConfiguration(
-        "Register Staff",
+        "Register Store",
         "GUIRegisterStoreModal",
         this::setTableItems
       )
@@ -67,22 +72,16 @@ public class GUIReviewStoreListPageController extends Controller {
   }
 
   public void onClickManageStore() {
-    StoreDTO selectedStore = tableStore.getSelectionModel().getSelectedItem();
-
-    if (selectedStore == null) {
-      AlertFacade.showWarningAndWait(
-        "Para realizar esta operación debe seleccionar una fila de la tabla."
-      );
-    } else {
+    getSelectedItemFromTable(tableStore).ifPresent(it -> {
       ModalFacade.createAndDisplayContextModal(
         new ModalFacadeConfiguration(
-          "Update Product",
+          "Update Store",
           "GUIRegisterStoreModal",
           this::setTableItems
         ),
-        selectedStore
+        it
       );
-    }
+    });
   }
 
   public static void navigateToStoreListPage(Stage currentStage) {
