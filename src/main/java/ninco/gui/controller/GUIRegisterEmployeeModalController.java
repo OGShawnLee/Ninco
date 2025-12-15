@@ -5,7 +5,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import ninco.business.AuthClient;
 import ninco.business.dao.AccountDAO;
 import ninco.business.dao.EmployeeDAO;
 import ninco.business.dao.StoreDAO;
@@ -125,9 +124,9 @@ public class GUIRegisterEmployeeModalController extends Controller implements Co
       isValid = false;
     }
 
-      isValid = GUISignUpPageController.isValid(isValid, fieldName, labelTagName, fieldLastName, labelTagLastName);
+    isValid = GUISignUpPageController.isValid(isValid, fieldName, labelTagName, fieldLastName, labelTagLastName);
 
-      if (fieldRole.getValue() == null) {
+    if (fieldRole.getValue() == null) {
       AlertFacade.showErrorAndWait("Unable to register employee. Please select a Role.");
       isValid = false;
     }

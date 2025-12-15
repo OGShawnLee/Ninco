@@ -70,7 +70,7 @@ public class GUIRegisterProductModalController extends Controller implements Con
   private boolean isValidData() {
     boolean isValid = true;
 
-    ValidationResult result = Validator.getIsInvalidNameResult(fieldName.getText(), "Name", 3, 128);
+    ValidationResult result = Validator.getIsInvalidNameResult(fieldName.getText(), "Name", 2, 128);
     if (result.isInvalid()) {
       labelTagName.setText(result.getMessage());
       isValid = false;
