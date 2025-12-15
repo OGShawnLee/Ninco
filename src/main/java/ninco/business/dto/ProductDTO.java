@@ -5,7 +5,7 @@ import ninco.common.InvalidFieldException;
 
 import java.time.LocalDateTime;
 
-public class ProductDTO implements Record {
+public class ProductDTO implements Record, Searchable {
   private int id;
   private final String name;
   private final String description;
@@ -37,7 +37,7 @@ public class ProductDTO implements Record {
     this.id = id;
     this.name = Validator.getValidName(name, "product-name", 3, 128);
     this.description = Validator.getValidText(description, "product-description");
-    this.brand = Validator.getValidName(brand, "product-brand", 3, 64);
+    this.brand = Validator.getValidName(brand, "product-brand", 1, 64);
     this.price = Validator.getValidPrice(price, "product-price");
     this.stock = stock;
     this.createdAt = createdAt;
@@ -55,7 +55,7 @@ public class ProductDTO implements Record {
   public ProductDTO(String name, String description, String brand, String price) throws InvalidFieldException {
     this.name = Validator.getValidName(name, "product-name", 3, 128);
     this.description = Validator.getValidText(description, "product-description");
-    this.brand = Validator.getValidName(brand, "product-brand", 3, 64);
+    this.brand = Validator.getValidName(brand, "product-brand", 1, 64);
     this.price = Validator.getValidPrice(Float.parseFloat(price), "product-price");
   }
 
@@ -87,7 +87,20 @@ public class ProductDTO implements Record {
     return createdAt;
   }
 
-  public int getProductId() {
+  public int getIDProduct() {
     return id;
+  }
+
+  @Override
+  public String getSearchableText() {
+    return String.format(
+      "%s %s %f %s %d %s",
+      getName(),
+      getDescription(),
+      getPrice(),
+      getBrand(),
+      getStock(),
+      getFormattedCreatedAt()
+    ).toLowerCase();
   }
 }
