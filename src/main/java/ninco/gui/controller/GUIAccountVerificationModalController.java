@@ -3,57 +3,65 @@ package ninco.gui.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
 import ninco.business.dao.EmployeeDAO;
 import ninco.business.dao.PendingRegistrationsDAO;
 import ninco.business.dto.SignUpContext;
+import ninco.business.rules.Validator;
 import ninco.common.UserDisplayableException;
 import ninco.gui.AlertFacade;
 
 public class GUIAccountVerificationModalController extends Controller implements ContextController<SignUpContext> {
+  @FXML
+  private TextField fieldPin;
+  @FXML
+  private Label labelTagPin;
+  private SignUpContext context;
 
-    @FXML private TextField fieldPin;
-    @FXML private Label labelError;
+  @Override
+  public void setContext(SignUpContext data) {
+    this.context = data;
+  }
 
-    private SignUpContext context;
+  public void initialize() {
+    cleanErrorLabels();
+  }
 
-    @Override
-    public void setContext(SignUpContext data) {
-        this.context = data;
+  private void cleanErrorLabels() {
+    labelTagPin.setText("");
+  }
+
+  private boolean isInvalidData() {
+    boolean isInvalidData = false;
+
+    if (Validator.isInvalidString(fieldPin.getText())) {
+      labelTagPin.setText("Por favor introduzca el código.");
+      isInvalidData = true;
     }
 
-    public void onClickVerify() {
-        try {
-            labelError.setText("");
-            String enteredPin = fieldPin.getText();
+    return isInvalidData;
+  }
 
-            // Validación compatible con Java 8 (sin isBlank)
-            if (enteredPin == null || enteredPin.trim().isEmpty()) {
-                labelError.setText("Por favor introduzca el código.");
-                return;
-            }
+  private void registerAccount() throws UserDisplayableException {
+    EmployeeDAO.getInstance().createOne(context.getEmployeeDTO(), context.getRawPassword());
+    AlertFacade.showSuccessAndWait("¡Cuenta verificada y creada exitosamente!");
+    close();
+  }
 
-            enteredPin = enteredPin.trim();
-            String email = context.getEmployeeDTO().getEmail();
+  public void onClickVerify() {
+    if (isInvalidData()) return;
 
-            // Verificar contra la base de datos (auditoría)
-            boolean isValid = PendingRegistrationsDAO.getInstance().verifyPin(email, enteredPin);
+    try {
+      boolean isValid = PendingRegistrationsDAO.getInstance().verifyPin(
+        context.getEmployeeDTO().getEmail(),
+        fieldPin.getText().trim()
+      );
 
-            if (!isValid) {
-                labelError.setText("Código incorrecto o expirado.");
-                return;
-            }
-
-            // Crear la cuenta real
-            EmployeeDAO.getInstance().createOne(
-                    context.getEmployeeDTO(),
-                    context.getRawPassword()
-            );
-
-            AlertFacade.showSuccessAndWait("¡Cuenta verificada y creada exitosamente!");
-            close();
-
-        } catch (UserDisplayableException e) {
-            AlertFacade.showErrorAndWait(e.getMessage());
-        }
+      if (isValid) {
+        registerAccount();
+      }
+    } catch (UserDisplayableException e) {
+      AlertFacade.showErrorAndWait(e.getMessage());
     }
+  }
 }

@@ -59,7 +59,7 @@ public class Validator {
   }
 
   public static boolean isInvalidString(String value) {
-    return value == null || value.trim().length() == 0;
+    return value == null || value.trim().isEmpty();
   }
 
   public static boolean isInvalidString(String value, int minLength, int maxLength) {
