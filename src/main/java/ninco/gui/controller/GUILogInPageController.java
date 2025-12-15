@@ -10,6 +10,7 @@ import ninco.business.dao.AccountDAO;
 import ninco.business.dao.EmployeeDAO;
 import ninco.business.dto.AccountDTO;
 import ninco.business.dto.EmployeeDTO;
+import ninco.business.enumeration.State;
 import ninco.business.rules.ValidationResult;
 import ninco.business.rules.Validator;
 import ninco.common.InvalidFieldException;
@@ -63,6 +64,7 @@ public class GUILogInPageController extends Controller {
 
         if (existingAccountDTO == null) {
           AlertFacade.showErrorAndWait("Unable to log in. Invalid credentials.");
+          return;
         }
 
         if (existingAccountDTO.hasPasswordMatch(password)) {
@@ -71,6 +73,10 @@ public class GUILogInPageController extends Controller {
           if (employeeDTO == null) {
             AlertFacade.showErrorAndWait("Unable to log in. Invalid credentials.");
             return;
+          }
+
+          if (employeeDTO.getState() == State.INACTIVE) {
+            AlertFacade.showErrorAndWait("Unable to log in. Your access has been revoked.");
           }
 
           AuthClient.getInstance().setCurrentUser(employeeDTO);
