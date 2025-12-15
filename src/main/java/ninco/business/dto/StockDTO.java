@@ -5,7 +5,7 @@ import ninco.common.InvalidFieldException;
 
 import java.time.LocalDateTime;
 
-public class StockDTO implements Record {
+public class StockDTO implements Record, Searchable {
   private final int idProduct;
   private final int idStore;
   private String productName;
@@ -84,5 +84,17 @@ public class StockDTO implements Record {
   @Override
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  @Override
+  public String getSearchableText() {
+    return String.format(
+      "%s %s %f %d %s",
+      getProductName(),
+      getStoreName(),
+      getPrice(),
+      getQuantity(),
+      getFormattedCreatedAt()
+    ).toLowerCase();
   }
 }

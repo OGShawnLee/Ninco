@@ -1,10 +1,12 @@
 package ninco.gui.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -32,6 +34,8 @@ public class GUIReviewStockListPageController extends Controller {
   @FXML
   private TableColumn<StockDTO, String> columnFormattedCreatedAt;
   @FXML
+  private TextField fieldSearch;
+  @FXML
   private Button buttonStartNewInvoice;
 
   public void initialize() {
@@ -42,28 +46,36 @@ public class GUIReviewStockListPageController extends Controller {
 
   private void configureButtonList() {
     EmployeeDTO currentUserDTO = AuthClient.getInstance().getCurrentUser();
-    if (currentUserDTO.getRole() == Role.CASHIER) {
-      buttonStartNewInvoice.setVisible(false);
-    }
+    buttonStartNewInvoice.setVisible(currentUserDTO.getRole() == Role.CASHIER);
   }
 
   private void configureTableColumns() {
-    columnProductName.setCellValueFactory(new PropertyValueFactory<>("ProductName"));
-    columnStoreName.setCellValueFactory(new PropertyValueFactory<>("StoreName"));
+    columnProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+    columnStoreName.setCellValueFactory(new PropertyValueFactory<>("storeName"));
     columnQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
     columnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     columnFormattedCreatedAt.setCellValueFactory(new PropertyValueFactory<>("formattedCreatedAt"));
   }
 
+  private void configureSearch(ObservableList<StockDTO> stockDTOObservableList) {
+    useConfigureSearch(fieldSearch, stockDTOObservableList, tableStock);
+  }
+
   private void setTableItems() {
     EmployeeDTO currentUserDTO = AuthClient.getInstance().getCurrentUser();
     try {
+      ObservableList<StockDTO> stockDTOObservableList;
+
       if (currentUserDTO.getRole() == Role.CASHIER) {
         StoreDTO storeDTO = StoreDAO.getInstance().getOne(currentUserDTO.getIDStore());
-        tableStock.setItems(FXCollections.observableList(StockDAO.getInstance().getAllByStore(storeDTO)));
-      } else  {
-        tableStock.setItems(FXCollections.observableList(StockDAO.getInstance().getAll()));
+        stockDTOObservableList = FXCollections.observableList(StockDAO.getInstance().getAllByStore(storeDTO));
+      } else {
+        stockDTOObservableList = FXCollections.observableList(StockDAO.getInstance().getAll());
       }
+
+      tableStock.setItems(stockDTOObservableList);
+
+      configureSearch(stockDTOObservableList);
     } catch (UserDisplayableException e) {
       AlertFacade.showErrorAndWait(
         "No ha sido posible recuperar información debido a un error en la base de datos, intente de nuevo más tarde."

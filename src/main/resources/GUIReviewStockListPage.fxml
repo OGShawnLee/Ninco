@@ -3,45 +3,56 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUIReviewStockListPageController">
-  <content>
-    <AnchorPane fx:id="container" minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0">
-      <VBox layoutX="182.0" layoutY="10.0" prefHeight="700.0" prefWidth="950.0" spacing="16.0">
-        <children>
-          <Label styleClass="title" text="Stock List"/>
-          <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
-            <HBox alignment="CENTER" spacing="16.0">
-              <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button" text="Home"/>
-              <Button fx:id="buttonStartNewInvoice" mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
-                      text="Start New Invoice"/>
-            </HBox>
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ninco.gui.controller.GUIReviewStockListPageController">
+  <children>
+    <VBox layoutX="172.0" prefHeight="800.0" prefWidth="950.0" spacing="16.0">
+      <children>
+        <HBox alignment="CENTER_LEFT" spacing="16.0">
+          <children>
+            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Search Product..."
+                       styleClass="input"/>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
+          <HBox alignment="CENTER" spacing="16.0">
+            <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
+                    text="Home"/>
+            <Button fx:id="buttonStartNewInvoice" mnemonicParsing="false" onMouseClicked="#navigateToLandingPage"
+                    styleClass="button"
+                    text="Start New Invoice"/>
           </HBox>
-          <TableView fx:id="tableStock" prefHeight="618.0" prefWidth="950.0">
-            <columns>
-              <TableColumn fx:id="columnProductName" prefWidth="240.0" text="Product Name"/>
-              <TableColumn fx:id="columnStoreName" prefWidth="240.0" styleClass="column" text="Store Name"/>
-              <TableColumn fx:id="columnQuantity" prefWidth="140.0" styleClass="column" text="Quantity"/>
-              <TableColumn fx:id="columnPrice" prefWidth="140.0" styleClass="column" text="Price"/>
-              <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="190.0" text="Registered At"/>
-            </columns>
-            <VBox.margin>
-              <Insets/>
-            </VBox.margin>
-          </TableView>
-        </children>
-        <padding>
-          <Insets bottom="32.0" top="32.0"/>
-        </padding>
-      </VBox>
-    </AnchorPane>
-  </content>
-</ScrollPane>
+        </HBox>
+        <TableView fx:id="tableStock" prefWidth="950.0" VBox.vgrow="ALWAYS">
+          <columns>
+            <TableColumn fx:id="columnProductName" prefWidth="120.0" styleClass="column" text="Product Name"/>
+            <TableColumn fx:id="columnStoreName" prefWidth="240.0" styleClass="column" text="Store Name"/>
+            <TableColumn fx:id="columnQuantity" prefWidth="160.0" styleClass="column" text="Quantity"/>
+            <TableColumn fx:id="columnPrice" prefWidth="120.0" styleClass="column" text="Price"/>
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
+                         text="Registered At"/>
+          </columns>
+        </TableView>
+      </children>
+      <padding>
+        <Insets bottom="32.0" top="96.0"/>
+      </padding>
+    </VBox>
+    <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
+      <children>
+        <Label styleClass="page-title" text="Inventory"/>
+      </children>
+      <padding>
+        <Insets left="64.0" right="64.0"/>
+      </padding>
+    </HBox>
+  </children>
+</AnchorPane>
