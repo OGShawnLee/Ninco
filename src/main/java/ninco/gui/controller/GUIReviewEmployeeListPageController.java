@@ -1,9 +1,11 @@
 package ninco.gui.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -20,8 +22,6 @@ public class GUIReviewEmployeeListPageController extends Controller {
   @FXML
   private TableView<EmployeeDTO> tableEmployee;
   @FXML
-  private TableColumn<EmployeeDTO, String> columnEmployeeID;
-  @FXML
   private TableColumn<EmployeeDTO, String> columnName;
   @FXML
   private TableColumn<EmployeeDTO, String> columnLastName;
@@ -35,6 +35,8 @@ public class GUIReviewEmployeeListPageController extends Controller {
   private TableColumn<EmployeeDTO, State> columnStoreName;
   @FXML
   private TableColumn<EmployeeDTO, String> columnFormattedCreatedAt;
+  @FXML
+  private TextField fieldSearch;
 
   public void initialize() {
     configureTableColumns();
@@ -42,7 +44,6 @@ public class GUIReviewEmployeeListPageController extends Controller {
   }
 
   public void configureTableColumns() {
-    columnEmployeeID.setCellValueFactory(new PropertyValueFactory<>("ID"));
     columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
     columnLastName.setCellValueFactory(new PropertyValueFactory<>("LastName"));
     columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -52,15 +53,18 @@ public class GUIReviewEmployeeListPageController extends Controller {
     columnFormattedCreatedAt.setCellValueFactory(new PropertyValueFactory<>("formattedCreatedAt"));
   }
 
+  private void configureSearch(ObservableList<EmployeeDTO> employeeDTOObservableList) {
+    useConfigureSearch(fieldSearch, employeeDTOObservableList, tableEmployee);
+  }
+
   public void setTableItems() {
     try {
-      tableEmployee.setItems(
-        FXCollections.observableList(EmployeeDAO.getInstance().getAll())
-      );
+      ObservableList<EmployeeDTO> employeeDTOObservableList = FXCollections.observableList(EmployeeDAO.getInstance().getAll());
+
+      tableEmployee.setItems(employeeDTOObservableList);
+      configureSearch(employeeDTOObservableList);
     } catch (UserDisplayableException e) {
-      AlertFacade.showErrorAndWait(
-        "No ha sido posible recuperar información debido a un error en la base de datos, intente de nuevo más tarde."
-      );
+      AlertFacade.showErrorAndWait(e);
     }
   }
 
@@ -75,22 +79,16 @@ public class GUIReviewEmployeeListPageController extends Controller {
   }
 
   public void onClickManageEmployee() {
-    EmployeeDTO selectedEmployee = tableEmployee.getSelectionModel().getSelectedItem();
-
-    if (selectedEmployee == null) {
-      AlertFacade.showWarningAndWait(
-        "Para realizar esta operación debe seleccionar una fila de la tabla."
-      );
-    } else {
+    getSelectedItemFromTable(tableEmployee).ifPresent(it -> {
       ModalFacade.createAndDisplayContextModal(
         new ModalFacadeConfiguration(
           "Update Employee",
           "GUIRegisterEmployeeModal",
           this::setTableItems
         ),
-        selectedEmployee
+        it
       );
-    }
+    });
   }
 
   public static void navigateToEmployeeListPage(Stage currentStage) {

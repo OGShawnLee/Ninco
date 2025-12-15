@@ -1,21 +1,28 @@
 package ninco.gui.controller;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ninco.App;
 import ninco.business.AuthClient;
+import ninco.business.dto.Searchable;
 import ninco.common.ExceptionHandler;
 import ninco.gui.AlertFacade;
 
@@ -33,6 +40,25 @@ public abstract class Controller {
 
   protected Stage getScene() {
     return (Stage) container.getScene().getWindow();
+  }
+
+  public static <T extends Searchable> void useConfigureSearch(
+    TextField fieldSearch,
+    ObservableList<T> searchableObservableList,
+    TableView<T> tableSearchable
+  ) {
+    FilteredList<T> filteredSearchableList = new FilteredList<>(
+      searchableObservableList, it -> true
+    );
+    fieldSearch.textProperty().addListener(
+      (observable, oldValue, newValue) -> filteredSearchableList.setPredicate(it ->
+        newValue == null || newValue.isEmpty() || it.getSearchableText().contains(newValue.toLowerCase())
+      ));
+    SortedList<T> sortedSearchableList = new SortedList<>(
+      filteredSearchableList
+    );
+    sortedSearchableList.comparatorProperty().bind(tableSearchable.comparatorProperty());
+    tableSearchable.setItems(sortedSearchableList);
   }
 
   /**
@@ -88,5 +114,15 @@ public abstract class Controller {
    */
   protected void close() {
     Platform.runLater(() -> getScene().close());
+  }
+
+  public static <T> Optional<T> getSelectedItemFromTable(TableView<T> table) {
+    T item = table.getSelectionModel().getSelectedItem();
+
+    if (item == null) {
+      AlertFacade.showWarningAndWait("For this operation you need to select an item from the table.");
+    }
+
+    return Optional.ofNullable(table.getSelectionModel().getSelectedItem());
   }
 }

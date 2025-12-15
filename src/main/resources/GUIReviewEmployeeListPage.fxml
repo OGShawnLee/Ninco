@@ -3,43 +3,59 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUIReviewEmployeeListPageController">
-  <content>
-    <AnchorPane fx:id="container" minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0">
-      <VBox layoutX="172.0" prefHeight="700.0" prefWidth="950.0" spacing="16.0">
-        <children>
-          <Label styleClass="title" text="Employee List" />
-          <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
-            <HBox alignment="CENTER" spacing="16.0">
-              <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button" text="Home" />
-              <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterEmployee" styleClass="button" text="Register Employee" />
-              <Button mnemonicParsing="false" onMouseClicked="#onClickManageEmployee" styleClass="button" text="Manage Employee" />
-            </HBox>
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ninco.gui.controller.GUIReviewEmployeeListPageController">
+  <children>
+    <VBox layoutX="172.0" prefHeight="800.0" prefWidth="950.0" spacing="16.0">
+      <children>
+        <HBox alignment="CENTER_LEFT" spacing="16.0">
+          <children>
+            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Search Employee..."
+                       styleClass="input"/>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
+          <HBox alignment="CENTER" spacing="16.0">
+            <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
+                    text="Home"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterEmployee" styleClass="button"
+                    text="Register Employee"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickManageEmployee" styleClass="button"
+                    text="Edit Employee"/>
           </HBox>
-          <TableView fx:id="tableEmployee" prefHeight="618.0" prefWidth="950.0">
-            <columns>
-              <TableColumn fx:id="columnEmployeeID" prefWidth="50.0" styleClass="column" text="ID" />
-              <TableColumn fx:id="columnName" prefWidth="120.0" styleClass="column" text="Name" />
-              <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Last Name" />
-              <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Email" />
-              <TableColumn fx:id="columnRole" prefWidth="70.0" styleClass="column" text="Role" />
-              <TableColumn fx:id="columnState" prefWidth="70.0" styleClass="column" text="State" />
-              <TableColumn fx:id="columnStoreName" prefWidth="160.0" styleClass="column" text="Store Name" />
-              <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="180.0" styleClass="column" text="Registered At" />
-            </columns>
-          </TableView>
-        </children>
-        <padding>
-          <Insets bottom="32.0" top="32.0" />
-        </padding>
-      </VBox>
-    </AnchorPane>
-  </content>
-</ScrollPane>
+        </HBox>
+        <TableView fx:id="tableEmployee" prefWidth="950.0" VBox.vgrow="ALWAYS">
+          <columns>
+            <TableColumn fx:id="columnName" prefWidth="120.0" styleClass="column" text="Name"/>
+            <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Last Name"/>
+            <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Email"/>
+            <TableColumn fx:id="columnRole" prefWidth="70.0" styleClass="column" text="Role"/>
+            <TableColumn fx:id="columnState" prefWidth="70.0" styleClass="column" text="State"/>
+            <TableColumn fx:id="columnStoreName" prefWidth="160.0" styleClass="column" text="Store Name"/>
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
+                         text="Registered At"/>
+          </columns>
+        </TableView>
+      </children>
+      <padding>
+        <Insets bottom="32.0" top="96.0"/>
+      </padding>
+    </VBox>
+    <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
+      <children>
+        <Label styleClass="page-title" text="Employee Administration"/>
+      </children>
+      <padding>
+        <Insets left="64.0" right="64.0"/>
+      </padding>
+    </HBox>
+  </children>
+</AnchorPane>

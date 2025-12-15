@@ -7,7 +7,7 @@ import ninco.common.InvalidFieldException;
 
 import java.time.LocalDateTime;
 
-public class EmployeeDTO implements Record {
+public class EmployeeDTO implements Record, Searchable {
   private int id;
   private int idAccount;
   private int idStore;
@@ -140,5 +140,18 @@ public class EmployeeDTO implements Record {
   @Override
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  @Override
+  public String getSearchableText() {
+    return String.format(
+      "%s %s %s %s %s %s",
+      getName(),
+      getLastName(),
+      getEmail(),
+      getRole(),
+      getNameStore(),
+      getFormattedCreatedAt()
+    ).toLowerCase();
   }
 }
