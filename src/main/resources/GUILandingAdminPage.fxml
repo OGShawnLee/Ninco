@@ -1,60 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUILandingAdminPageController">
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ninco.gui.controller.GUILandingAdminPageController">
   <children>
     <!-- User Info and Logout -->
-    <VBox layoutY="691.0" prefWidth="320.0" spacing="16.0">
+    <VBox layoutY="670.0" spacing="16.0">
       <children>
         <Label fx:id="labelEmail" styleClass="title" text="\@Email">
           <VBox.margin>
-            <Insets />
+            <Insets/>
           </VBox.margin>
           <padding>
-            <Insets bottom="8.0" />
+            <Insets bottom="8.0"/>
           </padding>
         </Label>
         <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
           <children>
-            <Button mnemonicParsing="false" onAction="#onClickLogOut" prefWidth="140.0" styleClass="button" text="Log Out" />
-            <Button mnemonicParsing="false" onAction="#onClickManageProfile" prefWidth="140.0" text="Manage Account" />
+            <Button mnemonicParsing="false" onAction="#onClickLogOut" prefWidth="140.0" styleClass="button"
+                    text="Sign Out"/>
+            <Button mnemonicParsing="false" onAction="#onClickManageProfile" prefWidth="140.0" text="Manage Account"/>
           </children>
         </HBox>
       </children>
       <padding>
-        <Insets bottom="32.0" left="32.0" />
+        <Insets bottom="64.0" left="64.0"/>
       </padding>
     </VBox>
     <!-- Main Actions -->
-    <VBox layoutX="475.0" layoutY="200.0" prefWidth="330.0" spacing="16.0">
+    <VBox layoutX="430.0" layoutY="336.0" prefWidth="420.0" spacing="16.0">
       <children>
         <!-- Employee List -->
-        <HBox maxWidth="-Infinity" prefHeight="32.0" spacing="16.0">
-           <children>
-             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewEmployeeList" prefWidth="160.0" styleClass="button" text="Employees" />
-             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterEmployee" prefWidth="160.0" styleClass="button" text="Register Employee" />
-           </children>
-        </HBox>
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                onAction="#onClickReviewEmployeeList" prefWidth="420.0" styleClass="button"
+                text="Employee Administration"/>
         <!-- Product List -->
-        <HBox maxWidth="-Infinity" prefHeight="32.0" spacing="16.0">
-           <children>
-             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewProductList" prefWidth="160.0" styleClass="button" text="Products" />
-             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterProduct" prefWidth="160.0" styleClass="button" text="Register Product" />
-           </children>
-        </HBox>
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewProductList"
+                prefWidth="420." styleClass="button" text="Product Administration"/>
         <!-- Store List -->
-        <HBox maxWidth="-Infinity" prefHeight="32.0" spacing="16.0">
-          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewStoreList" prefWidth="160.0" styleClass="button" text="Stores" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStore" prefWidth="160.0" styleClass="button" text="Register Store" />
-          </children>
-        </HBox>
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewStoreList"
+                prefWidth="420.0" styleClass="button" text="Store Administration"/>
+        <!-- Stock List -->
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewStock"
+                prefWidth="420.0" styleClass="button" text="Inventory"/>
       </children>
     </VBox>
-      <!-- Stock -->
-      <Button layoutX="475.0" layoutY="344.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewStock" prefWidth="160.0" styleClass="button" text="Inventory" />
+    <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
+      <children>
+        <Label styleClass="page-title" text="Home"/>
+      </children>
+      <padding>
+        <Insets left="64.0" right="64.0"/>
+      </padding>
+    </HBox>
   </children>
 </AnchorPane>
