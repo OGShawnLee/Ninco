@@ -7,9 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.Region?>
 
-<HBox fx:id="root" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUISignUpPageController">
+<HBox fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUISignUpPageController">
   <children>
 
     <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="left-panel">
@@ -35,34 +34,35 @@
 
             <VBox spacing="15.0">
               <children>
+
                 <VBox spacing="5.0">
                   <Label styleClass="field-label" text="Name" />
                   <TextField fx:id="fieldName" promptText="Introduce your Name" styleClass="input-field" />
-                  <Label fx:id="labelTagName" styleClass="error-label" text="Error message" visible="false" managed="false"/>
+                  <Label fx:id="labelTagName" styleClass="error-label" text="" wrapText="true"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                   <Label styleClass="field-label" text="Last Name" />
                   <TextField fx:id="fieldLastName" promptText="Introduce your Last Name" styleClass="input-field" />
-                  <Label fx:id="labelTagLastName" styleClass="error-label" text="Error message" visible="false" managed="false"/>
+                  <Label fx:id="labelTagLastName" styleClass="error-label" text="" wrapText="true"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                   <Label styleClass="field-label" text="Email" />
                   <TextField fx:id="fieldEmail" promptText="Introduce your Email" styleClass="input-field" />
-                  <Label fx:id="labelTagEmail" styleClass="error-label" text="Error message" visible="false" managed="false"/>
+                  <Label fx:id="labelTagEmail" styleClass="error-label" text="" wrapText="true"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                   <Label styleClass="field-label" text="Password" />
                   <PasswordField fx:id="fieldPassword" promptText="••••••••" styleClass="input-field" />
-                  <Label fx:id="labelTagPassword" styleClass="error-label" text="Error message" visible="false" managed="false"/>
+                  <Label fx:id="labelTagPassword" styleClass="error-label" text="" wrapText="true"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                   <Label styleClass="field-label" text="Confirm Password" />
                   <PasswordField fx:id="fieldConfirmPassword" promptText="••••••••" styleClass="input-field" />
-                  <Label fx:id="labelTagConfirmPassword" styleClass="error-label" text="Error message" visible="false" managed="false"/>
+                  <Label fx:id="labelTagConfirmPassword" styleClass="error-label" text="" wrapText="true"/>
                 </VBox>
               </children>
             </VBox>
