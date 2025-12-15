@@ -1,47 +1,247 @@
+/* ==================================================================
+   1. FUENTES (COMPATIBLE CON JAVA 8)
+   ================================================================== */
 @font-face {
     font-family: "Geist";
     src: url("/fonts/Geist-Regular.otf");
-    font-weight: normal;
 }
 
 @font-face {
-    font-family: "Geist";
+    font-family: "Geist Bold";
     src: url("/fonts/Geist-Bold.otf");
-    font-weight: bold;
 }
 
-.button, .column, .input, .label, .title, .text-area, .error-tag, .page-title {
+/* ==================================================================
+   2. ESTILOS GLOBALES
+   ================================================================== */
+.root {
     -fx-font-family: "Geist";
+    -fx-background-color: white;
+}
+
+/* Panel Izquierdo (Blanco) */
+.left-panel {
+    -fx-background-color: #FFFFFF;
+}
+
+/* Panel Derecho / Barra Superior (Gradiente de la marca) */
+.right-panel {
+    -fx-background-color: linear-gradient(to bottom right, #5e61c6, #3b3d85, #222455);
+}
+
+/* ==================================================================
+   3. TIPOGRAFÍA
+   ================================================================== */
+.title {
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 24px;
+    -fx-text-fill: #1A1A1A;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+.page-title {
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+.brand-title {
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 28px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.brand-subtitle {
+    -fx-font-size: 16px;
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+}
+
+.field-label {
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+}
+
+.link-label {
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 12px;
+    -fx-text-fill: #1A1A1A;
+    -fx-cursor: hand;
+}
+
+.error-label {
+    -fx-font-family: "Geist Bold";
+    -fx-text-fill: #D32F2F;
+    -fx-font-size: 11px;
+}
+
+/* ==================================================================
+   4. INPUTS (CAMPOS DE TEXTO)
+   Nota: Mantenemos .input y .input-field por compatibilidad
+   ================================================================== */
+.input, .input-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-pref-height: 40px;
+}
+
+.input:focused, .input-field:focused {
+    -fx-border-color: #4B4E9F;
+    -fx-background-color: #FAFAFA;
+}
+
+/* ==================================================================
+   5. BOTONES
+   ================================================================== */
+
+/* Botón Principal (Azul - Login/Register) */
+.button, .primary-button {
+    -fx-background-color: #43458b;
+    -fx-text-fill: white;
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-pref-height: 40px;
+}
+
+.button:hover, .primary-button:hover {
+    -fx-background-color: #35377A;
+}
+
+.button:pressed, .primary-button:pressed {
+    -fx-background-color: #2D2F66;
+}
+
+/* Botones del Menú Dashboard (Blancos con borde) */
+.menu-button {
+    -fx-background-color: white;
+    -fx-text-fill: #43458b;
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 16px;
+    -fx-border-color: #43458b;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+    -fx-pref-height: 50px;
+}
+
+.menu-button:hover {
+    -fx-background-color: #f0f0ff;
+}
+
+/* Botón Secundario (Manage Account - Gris) */
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666666;
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #333333;
+}
+
+/* Botón de Peligro (Sign Out - Rojo) */
+.danger-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d32f2f;
+    -fx-font-family: "Geist Bold";
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.danger-button:hover {
+    -fx-background-color: #ffebee;
 }
 
 :disabled {
     -fx-opacity: 0.85;
 }
 
-.page-title {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
+/* ==================================================================
+   6. TABLAS (TableView)
+   ================================================================== */
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 0;
 }
 
-.button, .input {
-    -fx-pref-height: 32px;
+/* Fondo del encabezado (Header) */
+.table-view .column-header-background {
+    -fx-background-color: #FAFAFA; /* Gris muy claro */
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #E0E0E0;
 }
 
-.title {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px; /* Altura del header */
+    -fx-border-width: 0;
 }
 
-.text-area {
-    -fx-pref-height: 128px;
+/* Texto del encabezado */
+.table-view .column-header .label {
+    -fx-font-family: "Geist Bold";
+    -fx-text-fill: #666666;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER-LEFT;
 }
 
-.text-notable {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
+/* Celdas (Filas) */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #f0f0f0;
+    -fx-cell-size: 40px; /* Altura de fila */
 }
 
-.error-tag {
-    -fx-font-size: 12px;
+/* Texto de las celdas */
+.table-cell {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 10 0 10;
+}
+
+/* Fila vacía */
+.table-row-cell:empty {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+/* Fila Seleccionada */
+.table-view:focused .table-row-cell:selected,
+.table-view .table-row-cell:selected {
+    -fx-background-color: #f0f0ff; /* Azul muy pálido */
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view:focused .table-row-cell:selected .table-cell {
+    -fx-text-fill: #43458b; /* Texto azul corporativo al seleccionar */
+    -fx-font-family: "Geist Bold";
 }
