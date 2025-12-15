@@ -3,49 +3,66 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUILandingCashierPageController">
-  <children>
-    <!-- User Info and Logout -->
-    <VBox layoutY="691.0" prefWidth="320.0" spacing="16.0">
+<BorderPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUILandingCashierPageController">
+
+  <top>
+    <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" styleClass="right-panel" BorderPane.alignment="CENTER">
       <children>
-        <Label fx:id="labelEmail" styleClass="title" text="\@Email">
-          <VBox.margin>
-            <Insets/>
-          </VBox.margin>
-          <padding>
-            <Insets bottom="8.0"/>
-          </padding>
-        </Label>
-        <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
-          <children>
-            <Button mnemonicParsing="false" onAction="#onClickLogOut" prefWidth="140.0" styleClass="button"
-                    text="Log Out"/>
-            <Button mnemonicParsing="false" onAction="#onClickManageProfile" prefWidth="140.0" text="Manage Account"/>
-          </children>
-        </HBox>
+        <Label styleClass="brand-title" text="NINCO" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label styleClass="brand-subtitle" text="Cashier Station" textFill="WHITE" />
       </children>
       <padding>
-        <Insets bottom="32.0" left="32.0"/>
+        <Insets left="40.0" right="40.0" />
+      </padding>
+    </HBox>
+  </top>
+
+  <center>
+    <VBox alignment="CENTER" maxWidth="400.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <children>
+        <VBox alignment="CENTER" spacing="10.0">
+          <children>
+            <Label styleClass="title" text="Sales Dashboard" />
+            <Label styleClass="subtitle" text="Ready to process transactions." />
+          </children>
+          <VBox.margin>
+            <Insets bottom="20.0" />
+          </VBox.margin>
+        </VBox>
+
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickSearchProduct" styleClass="menu-button" text="Start New Invoice" />
+
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickStartNewSale" styleClass="menu-button" text="Inventory" />
+      </children>
+      <padding>
+        <Insets bottom="20.0" top="20.0" />
       </padding>
     </VBox>
-    <!-- Main Actions -->
-    <VBox layoutX="475.0" layoutY="200.0" prefWidth="330.0" spacing="16.0">
+  </center>
+
+  <bottom>
+    <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-border-color: #E0E0E0; -fx-border-width: 1 0 0 0;" BorderPane.alignment="CENTER">
       <children>
-        <HBox maxWidth="-Infinity" prefHeight="32.0" spacing="16.0">
-          <Button mnemonicParsing="false" onAction="#onClickSearchProduct" prefWidth="360.0" styleClass="button"
-                  text="Start New Invoice"/>
-        </HBox>
-        <HBox maxWidth="-Infinity" prefHeight="32.0" spacing="16.0">
-          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickStartNewSale"
-                  prefWidth="360.0" styleClass="button" text="Inventory"/>
-        </HBox>
+        <VBox>
+          <children>
+            <Label styleClass="subtitle" text="Cashier:" />
+            <Label fx:id="labelEmail" styleClass="field-label" text="\@Email" />
+          </children>
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS" /> <Button mnemonicParsing="false" onAction="#onClickManageProfile" prefHeight="35.0" prefWidth="150.0" styleClass="secondary-button" text="Manage Account" />
+        <Button mnemonicParsing="false" onAction="#onClickLogOut" prefHeight="35.0" prefWidth="100.0" styleClass="danger-button" text="Log Out" />
       </children>
-    </VBox>
-  </children>
-</AnchorPane>
+      <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+      </padding>
+    </HBox>
+  </bottom>
+
+</BorderPane>

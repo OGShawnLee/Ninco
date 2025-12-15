@@ -1,42 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ninco.gui.controller.GUIAccountVerificationModalController">
+<HBox fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUIAccountVerificationModalController">
   <children>
-    <VBox prefHeight="800.0" prefWidth="800.0" style="-fx-alignment: center;">
+
+    <VBox alignment="CENTER" styleClass="left-panel" HBox.hgrow="ALWAYS">
       <children>
-        <VBox maxWidth="360.0" prefWidth="360.0" spacing="32.0">
+        <VBox maxWidth="360.0" spacing="25.0">
           <children>
-            <Label styleClass="title" text="Verificar Correo Electrónico"/>
-            <VBox prefWidth="340.0" spacing="16.0">
-              <Label
-                text="Hemos enviado un codigo de 6 digitos a su correo electronico. Por favor, ingreselo a continuacion."
-                wrapText="true"
-                styleClass="label"
-              />
+
+            <VBox spacing="10.0">
               <children>
-                <VBox prefWidth="360.0" spacing="8.0">
-                  <children>
-                    <Label styleClass="label" text="Código PIN"/>
-                    <TextField fx:id="fieldPin" promptText="Introduzca el PIN recibido"
-                               styleClass="input"/>
-                    <Label fx:id="labelTagPin" text="Label" textFill="RED"/>
-                  </children>
+                <Label styleClass="title" text="Verify account" />
+                <Label styleClass="subtitle" text="We sent a 6 digit pin to your mail. Please, enter it." wrapText="true" />
+              </children>
+              <VBox.margin>
+                <Insets bottom="10.0" />
+              </VBox.margin>
+            </VBox>
+
+            <VBox spacing="15.0">
+              <children>
+                <VBox spacing="5.0">
+                   <children>
+                     <Label styleClass="field-label" text="PIN" />
+                     <TextField fx:id="fieldPin" alignment="CENTER" promptText="######" style="-fx-font-size: 18px; -fx-font-family: 'Geist Bold';" styleClass="input-field" />
+   
+                     <Label fx:id="labelTagPin" managed="false" styleClass="error-label" text="Pin is invalid" visible="false" />
+                   </children>
                 </VBox>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickVerify"
-                        prefWidth="360.0" styleClass="button" text="Verificar"/>
               </children>
             </VBox>
+
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickVerify" styleClass="primary-button" text="Verify" />
+
           </children>
+          <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+          </padding>
         </VBox>
       </children>
     </VBox>
+
+    <VBox alignment="BOTTOM_LEFT" prefWidth="300.0" styleClass="right-panel" HBox.hgrow="NEVER">
+      <children>
+        <VBox spacing="10.0">
+          <children>
+            <Label style="-fx-font-size: 24px;" styleClass="brand-title" text="SECURITY" />
+            <Label style="-fx-font-size: 14px;" styleClass="brand-subtitle" text="Protecting your data." wrapText="true" />
+          </children>
+          <padding>
+            <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+          </padding>
+        </VBox>
+      </children>
+    </VBox>
+
   </children>
-</AnchorPane>
+</HBox>

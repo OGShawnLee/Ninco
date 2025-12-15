@@ -1,48 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ninco.gui.controller.GUIRegisterStockModalController">
+<HBox fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUIRegisterStockModalController">
   <children>
-    <VBox layoutX="220.0" layoutY="228.0" prefWidth="360.0" spacing="32.0">
+
+    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="left-panel">
       <children>
-        <Label fx:id="title" styleClass="title" text="Register Stock"/>
-        <VBox prefWidth="340.0" spacing="16.0">
+        <VBox maxWidth="360.0" spacing="25.0">
           <children>
-            <VBox prefWidth="360.0" spacing="8.0">
+
+            <VBox spacing="10.0">
               <children>
-                <Label styleClass="label" text="Product"/>
-                <TextField fx:id="fieldProduct" disable="true" editable="false" styleClass="input"/>
+                <Label fx:id="title" styleClass="title" text="Register Stock" />
+                <Label styleClass="subtitle" text="Assign product quantities to specific stores." wrapText="true" />
+              </children>
+              <VBox.margin>
+                <Insets bottom="10.0" />
+              </VBox.margin>
+            </VBox>
+
+            <VBox spacing="15.0">
+              <children>
+
+                <VBox spacing="5.0">
+                  <Label styleClass="field-label" text="Product" />
+                  <TextField fx:id="fieldProduct" disable="true" editable="false" styleClass="input-field" style="-fx-opacity: 0.7;" />
+                </VBox>
+
+                <VBox spacing="5.0">
+                  <Label styleClass="field-label" text="Store" />
+                  <ComboBox fx:id="fieldStore" maxWidth="1.7976931348623157E308" promptText="Select Target Store" styleClass="input-field" />
+                  <Label fx:id="labelTagStore" styleClass="error-label" text="Error" visible="false" managed="false"/>
+                </VBox>
+
+                <VBox spacing="5.0">
+                  <Label styleClass="field-label" text="Quantity" />
+                  <TextField fx:id="fieldQuantity" promptText="Enter amount (e.g., 50)" styleClass="input-field" />
+                  <Label fx:id="labelTagQuantity" styleClass="error-label" text="Error" visible="false" managed="false"/>
+                </VBox>
+
               </children>
             </VBox>
-            <VBox prefWidth="360.0" spacing="8.0">
-              <children>
-                <Label styleClass="label" text="Store"/>
-                <ComboBox fx:id="fieldStore" maxWidth="1.7976931348623157E308"
-                          promptText="Select the Store where the Product is stored"
-                          styleClass="input"/>
-                <Label fx:id="labelTagStore" text="Label" textFill="RED"/>
-              </children>
-            </VBox>
-            <VBox prefWidth="360.0" spacing="8.0">
-              <children>
-                <Label styleClass="label" text="Quantity"/>
-                <TextField fx:id="fieldQuantity" promptText="Introduce the Quantity of the Product" styleClass="input"/>
-                <Label fx:id="labelTagQuantity" text="Label" textFill="RED"/>
-              </children>
-            </VBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStock"
-                    styleClass="button" text="Confirm"/>
+
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStock" styleClass="primary-button" text="Update Stock" />
+
           </children>
+          <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+          </padding>
         </VBox>
       </children>
     </VBox>
+
+    <VBox alignment="BOTTOM_LEFT" prefWidth="300.0" styleClass="right-panel" HBox.hgrow="NEVER">
+      <children>
+        <VBox spacing="10.0">
+          <children>
+            <Label styleClass="brand-title" style="-fx-font-size: 24px;" text="LOGISTICS" />
+            <Label styleClass="brand-subtitle" style="-fx-font-size: 14px;" text="Efficient distribution management." wrapText="true" />
+          </children>
+          <padding>
+            <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+          </padding>
+        </VBox>
+      </children>
+    </VBox>
+
   </children>
-</AnchorPane>
+</HBox>

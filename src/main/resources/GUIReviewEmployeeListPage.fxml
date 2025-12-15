@@ -6,56 +6,71 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ninco.gui.controller.GUIReviewEmployeeListPageController">
-  <children>
-    <VBox layoutX="172.0" prefHeight="800.0" prefWidth="950.0" spacing="16.0">
+<BorderPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ninco.gui.controller.GUIReviewEmployeeListPageController">
+
+  <top>
+    <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" styleClass="right-panel" BorderPane.alignment="CENTER">
       <children>
-        <HBox alignment="CENTER_LEFT" spacing="16.0">
-          <children>
-            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Search Employee..."
-                       styleClass="input"/>
-          </children>
-        </HBox>
-        <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
-          <HBox alignment="CENTER" spacing="16.0">
-            <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
-                    text="Home"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterEmployee" styleClass="button"
-                    text="Register Employee"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickManageEmployee" styleClass="button"
-                    text="Edit Employee"/>
-          </HBox>
-        </HBox>
-        <TableView fx:id="tableEmployee" prefWidth="950.0" VBox.vgrow="ALWAYS">
-          <columns>
-            <TableColumn fx:id="columnName" prefWidth="120.0" styleClass="column" text="Name"/>
-            <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Last Name"/>
-            <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Email"/>
-            <TableColumn fx:id="columnRole" prefWidth="70.0" styleClass="column" text="Role"/>
-            <TableColumn fx:id="columnState" prefWidth="70.0" styleClass="column" text="State"/>
-            <TableColumn fx:id="columnStoreName" prefWidth="160.0" styleClass="column" text="Store Name"/>
-            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
-                         text="Registered At"/>
-          </columns>
-        </TableView>
+        <Label styleClass="brand-title" text="HR ADMIN" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label styleClass="brand-subtitle" text="Employee Management" textFill="WHITE" />
       </children>
       <padding>
-        <Insets bottom="32.0" top="96.0"/>
-      </padding>
-    </VBox>
-    <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
-      <children>
-        <Label styleClass="page-title" text="Employee Administration"/>
-      </children>
-      <padding>
-        <Insets left="64.0" right="64.0"/>
+        <Insets left="40.0" right="40.0" />
       </padding>
     </HBox>
-  </children>
-</AnchorPane>
+  </top>
+
+  <center>
+    <VBox spacing="20.0" BorderPane.alignment="CENTER">
+      <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+      </padding>
+      <children>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+          <children>
+            <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+              <children>
+                <Label styleClass="field-label" text="Search Team Member" />
+                <TextField fx:id="fieldSearch" maxWidth="400.0" promptText="Search by name, email or role..." styleClass="input-field" />
+              </children>
+            </VBox>
+
+            <Region minWidth="20.0" />
+
+            <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
+              <children>
+                <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="secondary-button" text="Back to Dashboard" />
+                <Button mnemonicParsing="false" onMouseClicked="#onClickManageEmployee" styleClass="secondary-button" text="Edit Selected" />
+                <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterEmployee" styleClass="primary-button" text="+ Register New Employee" />
+              </children>
+            </HBox>
+          </children>
+        </HBox>
+
+        <TableView fx:id="tableEmployee" VBox.vgrow="ALWAYS">
+          <columns>
+            <TableColumn fx:id="columnName" prefWidth="120.0" text="Name" />
+            <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Last Name" />
+            <TableColumn fx:id="columnEmail" prefWidth="200.0" text="Email" />
+            <TableColumn fx:id="columnRole" prefWidth="100.0" text="Role" />
+            <TableColumn fx:id="columnState" prefWidth="80.0" text="State" />
+            <TableColumn fx:id="columnStoreName" prefWidth="150.0" text="Store Branch" />
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="150.0" text="Date Joined" />
+          </columns>
+          <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+          </columnResizePolicy>
+        </TableView>
+
+      </children>
+    </VBox>
+  </center>
+
+</BorderPane>
